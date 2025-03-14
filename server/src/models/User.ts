@@ -10,6 +10,7 @@ interface IUser extends Document {
   isCorrectPassword(password: string): Promise<boolean>;
 }
 
+// Define the schema for the User document
 const userSchema = new Schema<IUser>(
   {
     username: {
