@@ -17,7 +17,7 @@ jobs:
     steps:
       # Get code from repo
       - name: Checkout code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Use Node.js 21.x
         uses: actions/setup-node@v1
@@ -39,4 +39,12 @@ jobs:
       # Run tests
       - name: Run Tests
         run: npm run test
-        
+
+      - name: run linters
+        uses: wearerequired/lint-action@v2
+        with: 
+        auto_fix: true
+        flake8: true
+        flake8_auto_fix: false
+    
+      
