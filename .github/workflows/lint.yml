@@ -4,8 +4,8 @@ name: Lint and Test workflow
 # Trigger workflow on all pull requests
 on:
   pull_request:
-    branches:
-      - develop
+    # The branches below must be a subset of the branches above
+    branches: [ "develop" ]
 
 # Jobs to carry out
 jobs:
