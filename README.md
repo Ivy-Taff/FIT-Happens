@@ -18,17 +18,19 @@ Fit Happens – Because Your Muscles Won’t Grow Themselves Tired of wandering 
 
 
 ## Usage
-README Generator
+ Browse exercises by muscle group or workout type.
+ Select your exercises and schedule them in your personal fitness calendar.
+Get reminders, stay consistent, and watch your progress unfold.
 
 ## License
 
 None
 
 ## Contributing
-Contribute README descriptions
 
-## Tests,
-Test README code
+
+## Tests
+
 
 ## Questions
 If you have any questions, feel free to reach out to us:
