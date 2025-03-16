@@ -17,7 +17,7 @@ const typeDefs = gql`
   type Exercise {
     _id: ID!
     name: String!
-    muscle: string
+    muscle: String
     equipment: String
     difficulty: String
     instructions: String
@@ -29,6 +29,11 @@ const typeDefs = gql`
     userId: ID!
     exercises: [Exercise]!
     createdAt: String
+  }
+
+  input WorkoutInput {
+    name: String
+    exercises: [String]
   }
   
   type Auth {
@@ -49,6 +54,7 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
     fetchAndStoreExercises: [Exercise]
     createWorkout(name: String!, userId: ID!, exerciseIds: [ID!]!): Workout
+    updateWorkout(id: ID!, input: WorkoutInput!) : Workout
     removeExerciseFromWorkout(workoutId: ID!, exerciseId: ID!): Workout
   }
 `;

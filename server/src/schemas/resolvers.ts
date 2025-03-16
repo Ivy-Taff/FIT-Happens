@@ -100,8 +100,7 @@ const resolvers = {
     
       // Return the token and the user
       return { token, user };
-    }
-  },
+    },
 
   fetchAndStoreExercises: async () => {
     try {
@@ -181,7 +180,7 @@ const resolvers = {
 
     return updatedWorkout;
   },
-};
+}};
 
 
 export default resolvers;
