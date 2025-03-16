@@ -24,3 +24,11 @@ export const ADD_USER = gql`
 }
 `;
 
+export const CREATE_WORKOUT = gql`
+  mutation CreateWorkout($name: String!, $userId: ID!, $exerciseIds: [ID!]!) {
+    createWorkout(name: $name, userId: $userId, exerciseIds: $exerciseIds) {
+      id
+      name
+    }
+  }
+`;

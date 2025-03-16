@@ -9,7 +9,7 @@ interface ExerciseDocument extends Document {
     instructions: string;
 }
 
-const exerciseSchema = new Schema<ExerciseDocument>({
+const exerciseSchema = new Schema({
     name: { type: String, required: true },
     type: { type: String, required: true },
     muscle: { type: String, required: true },
