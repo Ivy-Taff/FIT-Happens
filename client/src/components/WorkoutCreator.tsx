@@ -9,6 +9,7 @@ interface WorkoutCreatorProps {
     userId: string;
     closeForm: () => void;
 }
+
 const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId, closeForm }) => {
     const { workoutId } = useParams<{ workoutId: string }>();  // Get the workoutId from URL params if you're editing
     const navigate = useNavigate();  // For redirecting after creating/updating a workout
