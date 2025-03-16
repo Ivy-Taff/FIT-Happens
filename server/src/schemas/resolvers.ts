@@ -1,5 +1,5 @@
 import { User } from '../models/index.js';
-import Exercise from '../models/exercise.js';
+import Exercise from '../models/Exercise.js';
 import Workout from '../models/Workout.js';
 import axios from "axios";
 import { signToken, AuthenticationError } from '../utils/auth.js'; 
@@ -54,7 +54,18 @@ const resolvers = {
       // If the user is not authenticated, throw an AuthenticationError
       throw new AuthenticationError('Could not authenticate user.');
     },
+
+    // Query to get saved exercises
+    getSavedExercises: async () => {
+      return await Exercise.find();
+    },
+
+    // Query to get user workouts
+    getUserWorkouts: async (_: unknown, { userId }: { userId: string }) => {
+      return await Workout.find({userId}).populate("exercises");
+    },
   },
+
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {
       // Create a new user with the provided username, email, and password
@@ -128,10 +139,49 @@ const resolvers = {
       name,
       userId,
       exercises: exerciseIds,
-      currentDate: new Date(),
+      createdAt: new Date(),
     });
     return await workout.save();
   },
+
+  updateWorkout: async (_: unknown, { workoutId, name, exerciseIds }: {workoutId: string; name: string; exerciseIds: []}) => {
+    try {
+      // Find the workout by its ID
+      const workout = await Workout.findById(workoutId);
+
+      if (!workout) {
+        throw new Error("Workout not found");
+      }
+
+      // Update the workout's name and exercises
+      workout.name = name;
+      workout.exercises = exerciseIds;
+
+      // Save the updated workout
+      const updatedWorkout = await workout.save();
+
+      return updatedWorkout;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error updating workout");
+    }
+  },
+
+  removeExerciseFromWorkout: async (_: unknown, { workoutId, exerciseId }: { workoutId: string; exerciseId: string }
+  ) => {
+    const updatedWorkout = await Workout.findByIdAndUpdate(
+      workoutId,
+      { $pull: { exercises: exerciseId } }, // Removes exerciseId from exercises array
+      { new: true }
+    ).populate("exercises"); // Return updated workout with exercises
+
+    if (!updatedWorkout) {
+      throw new Error("Workout not found");
+    }
+
+    return updatedWorkout;
+  },
 };
+
 
 export default resolvers;

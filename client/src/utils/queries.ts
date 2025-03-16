@@ -32,9 +32,9 @@ export const QUERY_ME = gql`
   }
 `;
 
-export const GET_EXERCISES = gql`
-  query GetExercises {
-    exercises {
+export const GET_SAVED_EXERCISES = gql`
+  query GetSavedExercises {
+    getSavedExercises {
       _id
       name
       type
@@ -43,4 +43,19 @@ export const GET_EXERCISES = gql`
       difficulty
       instructions
     }
-  }`
+  }
+`;
+
+export const GET_WORKOUT = gql`
+  query GetWorkout($workoutId: ID!) {
+    workout(id: $workoutId) {
+      id
+      name
+      exercises {
+        id
+        name
+      }
+    }
+  }
+`;
+
