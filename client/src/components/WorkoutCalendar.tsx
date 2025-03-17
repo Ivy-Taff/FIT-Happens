@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_USER_WORKOUTS } from "../utils/queries";
-import { Workout } from "../models/Workout"; // Make sure you have this model defined
+import { Workout } from "../interfaces/Workout"; // Make sure you have this model defined
 
 interface WorkoutCalendarProps {
   userId: string;
