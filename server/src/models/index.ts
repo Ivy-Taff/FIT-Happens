@@ -1,5 +1,5 @@
 
 import User from './User.js';
-import Exercise from './exersize.js';
-import Workout from './workouts.js';
+import Exercise from './Exercise.js';
+import Workout from './Workout.js';
 export {User, Exercise, Workout};
