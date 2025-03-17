@@ -2,7 +2,7 @@ import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 import Workout from './Workout'; 
 
-interface IUser extends Document {
+interface User extends Document {
   username: string;
   email: string;
   password: string;
@@ -11,7 +11,7 @@ interface IUser extends Document {
 }
 
 // Define the schema for the User document
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<User>(
   {
     username: {
       type: String,
@@ -44,7 +44,7 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-userSchema.pre<IUser>('save', async function (next) {
+userSchema.pre<User>('save', async function (next) {
   if (this.isNew || this.isModified('password')) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(this.password, saltRounds);
@@ -57,6 +57,6 @@ userSchema.methods.isCorrectPassword = async function (password: string): Promis
   return bcrypt.compare(password, this.password);
 };
 
-const User = model<IUser>('User', userSchema);
+const User = model<User>('User', userSchema);
 
 export default User;

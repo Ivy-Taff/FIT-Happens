@@ -36,6 +36,12 @@ interface CreateWorkoutArgs {
   exerciseIds: string[];
 }
 
+interface UserContext {
+  user: {
+    _id: string;
+  };
+}
+
 interface AddExerciseArgs {
   input: {
     name: string;
@@ -165,11 +171,11 @@ const resolvers = {
 
     ,
 
-    createWorkout: async (_: unknown, { name, userId, exerciseIds }: CreateWorkoutArgs
+    createWorkout: async (_: unknown, { name, exerciseIds }: CreateWorkoutArgs, context: UserContext
     ) => {
       const workout = new Workout({
         name,
-        userId,
+        userId: context.user._id,
         exercises: exerciseIds,
         createdAt: new Date(),
       });
