@@ -59,3 +59,17 @@ export const GET_WORKOUT = gql`
   }
 `;
 
+export const GET_USER_WORKOUTS = gql`
+query GetUserWorkouts($userId: ID!) {
+  userWorkouts(userId: $userId) {
+    name
+    userId
+    exercises {
+      _id
+      name
+    }
+    createdAt
+  }
+}
+`;
+
