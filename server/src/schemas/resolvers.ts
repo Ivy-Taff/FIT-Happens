@@ -86,7 +86,8 @@ const resolvers = {
 
     // Query to get user workouts
     getUserWorkouts: async (_: unknown, { userId }: { userId: string }) => {
-      return await Workout.find({userId}).populate("exercises");},
+      return await Workout.find({ userId }).populate("exercises");
+    },
 
     exercises: async () => {
       return Exercise.find();
@@ -123,95 +124,96 @@ const resolvers = {
     },
 
 
-  fetchAndStoreExercises: async () => {
-    try {
-      const { data } = await axios.get(EXTERNAL_API_URL, {
-        headers: { "X_API_KEY" : X_API_KEY }
-      });
+    fetchAndStoreExercises: async () => {
+      try {
+        const { data } = await axios.get(EXTERNAL_API_URL, {
+          headers: { "X_API_KEY": X_API_KEY }
+        });
 
-      const savedExercises = [];
+        const savedExercises = [];
 
-      for (const ex of data.exercises) {
-        let existingExercise = await Exercise.findOne({ _id: ex._id });
+        for (const ex of data.exercises) {
+          let existingExercise = await Exercise.findOne({ _id: ex._id });
 
-        if (!existingExercise) {
-          const newExercise = new Exercise({
-            _id: ex._id,
-            name: ex.name,
-            type: ex.type,
-            muscle: ex.muscle,
-            equipment: ex.equipment,
-            difficulty: ex.difficulty,
-            instructions: ex.instructions,
-          });
-          savedExercises.push(await newExercise.save());
+          if (!existingExercise) {
+            const newExercise = new Exercise({
+              _id: ex._id,
+              name: ex.name,
+              type: ex.type,
+              muscle: ex.muscle,
+              equipment: ex.equipment,
+              difficulty: ex.difficulty,
+              instructions: ex.instructions,
+            });
+            savedExercises.push(await newExercise.save());
+          }
         }
+        return savedExercises;
+      } catch (error) {
+        throw new Error("Error fetching exercises");
       }
-      return savedExercises;
-    } catch (error) {
-      throw new Error("Error fetching exercises");
-    }
-  },
-    
+    },
+
 
     addExercise: async (_parent: any, { input }: AddExerciseArgs) => {
       return Exercise.create({ ...input });
     },
-    
+
     addWorkout: async (_parent: any, { input }: AddWorkoutArgs) => {
       return Workout.create({ ...input });
     }
-  
-  },
 
-  createWorkout: async (_: unknown, { name, userId, exerciseIds }: CreateWorkoutArgs
-  ) => {
-    const workout = new Workout({
-      name,
-      userId,
-      exercises: exerciseIds,
-      createdAt: new Date(),
-    });
-    return await workout.save();
-  },
+    ,
 
-  updateWorkout: async (_: unknown, { workoutId, name, exerciseIds }: {workoutId: string; name: string; exerciseIds: []}) => {
-    try {
-      // Find the workout by its ID
-      const workout = await Workout.findById(workoutId);
+    createWorkout: async (_: unknown, { name, userId, exerciseIds }: CreateWorkoutArgs
+    ) => {
+      const workout = new Workout({
+        name,
+        userId,
+        exercises: exerciseIds,
+        createdAt: new Date(),
+      });
+      return await workout.save();
+    },
 
-      if (!workout) {
+    updateWorkout: async (_: unknown, { workoutId, name, exerciseIds }: { workoutId: string; name: string; exerciseIds: [] }) => {
+      try {
+        // Find the workout by its ID
+        const workout = await Workout.findById(workoutId);
+
+        if (!workout) {
+          throw new Error("Workout not found");
+        }
+
+        // Update the workout's name and exercises
+        workout.name = name;
+        workout.exercises = exerciseIds;
+
+        // Save the updated workout
+        const updatedWorkout = await workout.save();
+
+        return updatedWorkout;
+      } catch (error) {
+        console.error(error);
+        throw new Error("Error updating workout");
+      }
+    },
+
+    removeExerciseFromWorkout: async (_: unknown, { workoutId, exerciseId }: { workoutId: string; exerciseId: string }
+    ) => {
+      const updatedWorkout = await Workout.findByIdAndUpdate(
+        workoutId,
+        { $pull: { exercises: exerciseId } }, // Removes exerciseId from exercises array
+        { new: true }
+      ).populate("exercises"); // Return updated workout with exercises
+
+      if (!updatedWorkout) {
         throw new Error("Workout not found");
       }
 
-      // Update the workout's name and exercises
-      workout.name = name;
-      workout.exercises = exerciseIds;
-
-      // Save the updated workout
-      const updatedWorkout = await workout.save();
-
       return updatedWorkout;
-    } catch (error) {
-      console.error(error);
-      throw new Error("Error updating workout");
-    }
-  },
-
-  removeExerciseFromWorkout: async (_: unknown, { workoutId, exerciseId }: { workoutId: string; exerciseId: string }
-  ) => {
-    const updatedWorkout = await Workout.findByIdAndUpdate(
-      workoutId,
-      { $pull: { exercises: exerciseId } }, // Removes exerciseId from exercises array
-      { new: true }
-    ).populate("exercises"); // Return updated workout with exercises
-
-    if (!updatedWorkout) {
-      throw new Error("Workout not found");
-    }
-
-    return updatedWorkout;
-  },
+    },
+  }
 };
 
 
