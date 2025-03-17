@@ -4,7 +4,7 @@ import { REMOVE_EXERCISE_FROM_WORKOUT } from "../utils/mutations";
 import { CREATE_WORKOUT, UPDATE_WORKOUT } from "../utils/mutations";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Exercise } from "../models/Exercise";
+import { Exercise } from "../interfaces/Exercise";
 
 interface WorkoutCreatorProps {
     userId: string;
