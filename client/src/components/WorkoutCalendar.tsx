@@ -3,9 +3,6 @@ import { useQuery } from "@apollo/client";
 import { GET_USER_WORKOUTS } from "../utils/queries";
 import { Workout } from "../models/Workout"; // Make sure you have this model defined
 
-interface WorkoutCalendarProps {
-  userId: string;
-}
 
 const daysOfWeek = [
   "Monday",
@@ -17,7 +14,7 @@ const daysOfWeek = [
   "Sunday",
 ];
 
-const WorkoutCalendar: React.FC<WorkoutCalendarProps> = ({ userId }) => {
+const WorkoutCalendar: React.FC = () => {
   const { loading, error, data } = useQuery(GET_USER_WORKOUTS);
   
   // State to track workouts assigned to each day
