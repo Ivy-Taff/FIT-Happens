@@ -6,11 +6,12 @@ export const QUERY_USER = gql`
       _id
       username
       email
-      thoughts {
+      workouts {[
         _id
-        thoughtText
-        createdAt
-      }
+        exercises
+        currentDate
+        # I am not sur if current date is appropriate here?
+      ]}
     }
   }
 `;
@@ -21,12 +22,40 @@ export const QUERY_ME = gql`
       _id
       username
       email
-      thoughts {
+      workouts {[
         _id
-        thoughtText
-        thoughtAuthor
-        createdAt
+        exercises
+        currentDate
+        # I am not sur if current date is appropriate here?
+      ]}
+    }
+  }
+`;
+
+export const GET_SAVED_EXERCISES = gql`
+  query GetSavedExercises {
+    getSavedExercises {
+      _id
+      name
+      type
+      muscle
+      equipment
+      difficulty
+      instructions
+    }
+  }
+`;
+
+export const GET_WORKOUT = gql`
+  query GetWorkout($workoutId: ID!) {
+    workout(id: $workoutId) {
+      _id
+      name
+      exercises {
+        _id
+        name
       }
     }
   }
 `;
+
