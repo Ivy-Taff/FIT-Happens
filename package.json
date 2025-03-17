@@ -38,5 +38,9 @@
     "typescript": "^5.5.3",
     "vitest": "^2.0.3",
     "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "react-bootstrap": "^2.10.9"
   }
 }

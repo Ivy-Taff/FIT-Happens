@@ -14,6 +14,28 @@ const typeDefs = gql`
     email: String!
     password: String!
   }
+
+  type Exercise {
+    _id: ID!
+    name: String!
+    muscle: String
+    equipment: String
+    difficulty: String
+    instructions: String
+  }
+
+  type Workout {
+    _id: ID!
+    name: String!
+    userId: ID!
+    exercises: [Exercise]!
+    createdAt: String
+  }
+
+  input WorkoutInput {
+    name: String
+    exercises: [String]
+  }
   
   type Auth {
     token: ID!
@@ -54,17 +76,25 @@ const typeDefs = gql`
     users: [User]
     user(username: String!): User
     me: User
+    getSavedExercises: [Exercise]
+    getUserWorkouts(userId: ID!): [Workout]
     exercises: [Exercise]
     exercise(id: ID!): Exercise
     workouts: [Workout]
     workout(id: ID!): Workout
+
   }
 
   type Mutation {
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
+    fetchAndStoreExercises: [Exercise]
+    createWorkout(name: String!, userId: ID!, exerciseIds: [ID!]!): Workout
+    updateWorkout(id: ID!, input: WorkoutInput!) : Workout
+    removeExerciseFromWorkout(workoutId: ID!, exerciseId: ID!): Workout
     addExercise(input: ExerciseInput!): Exercise
     addWorkout(input: WorkoutInput!): Workout
+
   }
 `;
 
