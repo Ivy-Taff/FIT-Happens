@@ -1,10 +1,5 @@
 
-import { User } from '../models/index.js';
-import Exercise from '../models/Exercise.js';
-import Workout from '../models/Workout.js';
 import axios from "axios";
-import { signToken, AuthenticationError } from '../utils/auth.js'; 
-
 import { User, Workout, Exercise } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 
@@ -39,6 +34,7 @@ interface CreateWorkoutArgs {
   name: string;
   userId: string;
   exerciseIds: string[];
+}
 
 interface AddExerciseArgs {
   input: {
@@ -90,7 +86,7 @@ const resolvers = {
 
     // Query to get user workouts
     getUserWorkouts: async (_: unknown, { userId }: { userId: string }) => {
-      return await Workout.find({userId}).populate("exercises");
+      return await Workout.find({userId}).populate("exercises");},
 
     exercises: async () => {
       return Exercise.find();
@@ -155,14 +151,17 @@ const resolvers = {
     } catch (error) {
       throw new Error("Error fetching exercises");
     }
+  },
+    
 
     addExercise: async (_parent: any, { input }: AddExerciseArgs) => {
       return Exercise.create({ ...input });
     },
+    
     addWorkout: async (_parent: any, { input }: AddWorkoutArgs) => {
       return Workout.create({ ...input });
-    },
-
+    }
+  
   },
 
   createWorkout: async (_: unknown, { name, userId, exerciseIds }: CreateWorkoutArgs
@@ -213,7 +212,7 @@ const resolvers = {
 
     return updatedWorkout;
   },
-}};
+};
 
 
 export default resolvers;
