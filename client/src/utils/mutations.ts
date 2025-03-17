@@ -17,6 +17,8 @@ export const ADD_USER = gql`
   addUser(input: $input) {
     user {
       username
+      email
+      password
       _id
     }
     token
