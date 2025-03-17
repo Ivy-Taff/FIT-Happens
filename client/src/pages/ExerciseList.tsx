@@ -8,18 +8,25 @@ import { Exercise } from '../models/Exercise'
 interface SavedExercisesData {
   ExerciseList: Exercise[];
 }
+
+// not sure how userId is coming in on signup, this is assuming we are saving them in local
 const storedUserId = localStorage.getItem('userId') || '';
 
 const ExerciseList: React.FC = () => {
+  // This retrieves the exercises we've save in our DB
   const { loading, error, data } = useQuery<SavedExercisesData>(GET_SAVED_EXERCISES);
+  // This is to open the workout creator
   const [showForm, setShowForm] = useState<boolean>(false);
   // These are to select which cards to see based on selections
   const [selectedType, setSelectedType] = useState('');
   const [selectedMuscle, setSelectedMuscle] = useState('');
   const [selectedEquipment, setSelectedEquipment] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
+
+  
   const handleShowForm = () => setShowForm(true);
   const handleHideForm = () => setShowForm(false);
+
   // Check for loading or error states
   if (error) return <h2>Error fetching exercises: {error.message}</h2>;
 
@@ -59,7 +66,7 @@ const ExerciseList: React.FC = () => {
             : 'No exercises match your filters!'}
         </h2>
 
-        {/* Filters */}
+        {/* Filters for sorting the cards */}
         <Row className='mb-4'>
           <Col md={3}>
             <Form.Select onChange={(e) => setSelectedType(e.target.value)} value={selectedType}>
@@ -104,6 +111,7 @@ const ExerciseList: React.FC = () => {
         </Row>
 
         <Row>
+          {/* This is our exercise card layout */}
           {filteredExercisesList.map((exercise) => (
             <Col md='4' key={exercise._id}>
               <Card border='dark'>
@@ -121,6 +129,7 @@ const ExerciseList: React.FC = () => {
           ))}
         </Row>
 
+          {/* This is a button to open the WorkoutCreator, any other ideas??? */}
         <Button variant='primary' onClick={handleShowForm}>
           Create Workout
         </Button>

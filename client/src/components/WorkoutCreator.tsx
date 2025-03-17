@@ -4,6 +4,7 @@ import { REMOVE_EXERCISE_FROM_WORKOUT } from "../utils/mutations";
 import { CREATE_WORKOUT, UPDATE_WORKOUT } from "../utils/mutations";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Exercise } from "../models/Exercise";
 
 interface WorkoutCreatorProps {
     userId: string;
@@ -11,8 +12,8 @@ interface WorkoutCreatorProps {
 }
 
 const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId, closeForm }) => {
-    const { workoutId } = useParams<{ workoutId: string }>();  // Get the workoutId from URL params if you're editing
-    const navigate = useNavigate();  // For redirecting after creating/updating a workout
+    const { workoutId } = useParams<{ workoutId: string }>();  // Get the workoutId from URL params
+    const navigate = useNavigate();  // For redirecting after creating/updating
     const { loading, error, data } = useQuery(GET_SAVED_EXERCISES);
     const [createWorkout] = useMutation(CREATE_WORKOUT);
     const [updateWorkout] = useMutation(UPDATE_WORKOUT); // Mutation to update existing workout
@@ -24,11 +25,11 @@ const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId, closeForm }) =>
     useEffect(() => {
         if (workoutId) {
           // Fetch the workout data based on workoutId
-          // Assuming GET_WORKOUT query returns workout data
+          // GET_WORKOUT query should return workout data
           const workout = data?.workout;
           if (workout) {
             setWorkoutName(workout.name);
-            setSelectedExercises(workout.exercises.map((ex: any) => ex.id)); // Set selected exercises
+            setSelectedExercises(workout.exercises.map((ex: Exercise) => ex._id)); // Set selected exercises
           }
         }
       }, [workoutId, data]);
@@ -106,13 +107,13 @@ const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId, closeForm }) =>
     
           <h3>Available Exercises</h3>
           <ul>
-            {data.getSavedExercises.map((exercise: any) => (
-              <li key={exercise.id}>
+            {data.getSavedExercises.map((exercise: Exercise) => (
+              <li key={exercise._id}>
                 <label>
                   <input
                     type="checkbox"
-                    checked={selectedExercises.includes(exercise.id)}
-                    onChange={() => handleExerciseSelect(exercise.id)}
+                    checked={selectedExercises.includes(exercise._id)}
+                    onChange={() => handleExerciseSelect(exercise._id)}
                   />
                   {exercise.name}
                 </label>
@@ -124,7 +125,7 @@ const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId, closeForm }) =>
           <ul>
             {selectedExercises.map((exerciseId) => {
               const exercise = data.getSavedExercises.find(
-                (ex: any) => ex.id === exerciseId
+                (ex: Exercise) => ex._id === exerciseId
               );
               return (
                 <li key={exerciseId}>
