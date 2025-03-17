@@ -1,4 +1,8 @@
+
+import '../styles/styles.css';
+
 const Home = () => {
+
 
   return (
     <main>

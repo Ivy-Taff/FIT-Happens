@@ -1,4 +1,7 @@
+
+import '../styles/styles.css';
 import { useRouteError } from 'react-router-dom';
+
 
 interface RouteError {
   statusText?: string;

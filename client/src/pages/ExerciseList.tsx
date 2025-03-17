@@ -1,9 +1,11 @@
+
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Container, Card, Row, Col, Button, Form } from 'react-bootstrap';
 import { GET_SAVED_EXERCISES } from '../utils/queries';
 import CreateWorkout from '../components/WorkoutCreator';
-import { Exercise } from '../models/Exercise'
+import { Exercise } from '../models/Exercise';
+import '../styles/styles.css';
 
 interface SavedExercisesData {
   ExerciseList: Exercise[];

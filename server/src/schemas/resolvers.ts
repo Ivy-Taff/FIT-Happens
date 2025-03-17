@@ -44,7 +44,7 @@ interface AddExerciseArgs {
     equipment?: string;
     difficulty?: string;
     instructions?: string;
-  };
+  }
 }
 
 interface AddWorkoutArgs {
