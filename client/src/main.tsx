@@ -8,6 +8,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import ErrorPage from './pages/Error';
 import ExerciseList from './pages/ExerciseList.js';
+import WorkoutCalendar from './components/WorkoutCalendar.js';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,9 @@ const router = createBrowserRouter([
       }, {
         path: '/exercises',
         element: <ExerciseList />
+      }, {
+        path: '/calendar',
+        element: <WorkoutCalendar />
       }
     ]
   },
