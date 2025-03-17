@@ -14,6 +14,7 @@ const Signup = () => {
   });
   const [addUser, { error, data }] = useMutation(ADD_USER);
 
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
@@ -21,7 +22,6 @@ const Signup = () => {
       ...formState,
       [name]: value,
     });
-  };
 
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();

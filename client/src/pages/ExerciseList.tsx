@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import { Container, Card, Row, Col, Button, Form } from 'react-bootstrap';
 import { GET_SAVED_EXERCISES } from '../utils/queries';
 import CreateWorkout from '../components/WorkoutCreator';
-import { Exercise } from '../models/Exercise'
+import { Exercise } from '../interfaces/Exercise'
 
 interface SavedExercisesData {
   ExerciseList: Exercise[];

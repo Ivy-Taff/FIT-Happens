@@ -1,9 +1,11 @@
+
 import { useState, type FormEvent, type ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 
 import Auth from '../utils/auth';
+import LoginForm from "../components/LoginForm";
 
 const Login = () => {
   const [formState, setFormState] = useState({ email: '', password: '' });
@@ -35,8 +37,7 @@ const Login = () => {
       email: '',
       password: '',
     });
-  };
-
+    
   return (
     <main className="flex-row justify-center mb-4">
       <div className="col-12 col-lg-10">
