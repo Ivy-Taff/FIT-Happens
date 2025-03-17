@@ -49,10 +49,10 @@ export const GET_SAVED_EXERCISES = gql`
 export const GET_WORKOUT = gql`
   query GetWorkout($workoutId: ID!) {
     workout(id: $workoutId) {
-      id
+      _id
       name
       exercises {
-        id
+        _id
         name
       }
     }

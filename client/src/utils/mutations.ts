@@ -37,10 +37,10 @@ export const CREATE_WORKOUT = gql`
 export const UPDATE_WORKOUT = gql`
   mutation UpdateWorkout($workoutId: ID!, $name: String!, $exerciseIds: [ID!]!) {
     updateWorkout(workoutId: $workoutId, name: $name, exerciseIds: $exerciseIds) {
-      id
+      _id
       name
       exercises {
-        id
+        _id
         name
       }
     }
@@ -50,10 +50,10 @@ export const UPDATE_WORKOUT = gql`
 export const REMOVE_EXERCISE_FROM_WORKOUT = gql`
   mutation RemoveExerciseFromWorkout($workoutId: ID!, $exerciseId: ID!) {
     removeExerciseFromWorkout(workoutId: $workoutId, exerciseId: $exerciseId) {
-      id
+      _id
       name
       exercises {
-        id
+        _id
         name
       }
     }
