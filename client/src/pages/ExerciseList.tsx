@@ -1,55 +1,92 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { Container, Card, Row, Col, Button, Form } from 'react-bootstrap';
 import { GET_SAVED_EXERCISES } from '../utils/queries';
 import CreateWorkout from '../components/WorkoutCreator';
-import { Exercise } from '../interfaces/Exercise'
+import { Exercise } from '../interfaces/Exercise';
 
+// Update interface field to match query response key
 interface SavedExercisesData {
-  ExerciseList: Exercise[];
+  getSavedExercises: Exercise[];
 }
 
 // not sure how userId is coming in on signup, this is assuming we are saving them in local
 const storedUserId = localStorage.getItem('userId') || '';
 
+// Default fallback values based on your provided sample response
+const defaultTypes = ['strongman'];
+const defaultMuscleGroups = ['forearms'];
+const defaultEquipments = ['other'];
+const defaultDifficulties = ['beginner'];
+
 const ExerciseList: React.FC = () => {
-  // This retrieves the exercises we've save in our DB
   const { loading, error, data } = useQuery<SavedExercisesData>(GET_SAVED_EXERCISES);
-  // This is to open the workout creator
   const [showForm, setShowForm] = useState<boolean>(false);
-  // These are to select which cards to see based on selections
   const [selectedType, setSelectedType] = useState('');
-  const [selectedMuscle, setSelectedMuscle] = useState('');
+  const [selectedMusclegroup, setSelectedMusclegroup] = useState('');
   const [selectedEquipment, setSelectedEquipment] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
 
-  
+  // For debugging: store computed options in state
+  const [types, setTypes] = useState<string[]>(defaultTypes);
+  const [muscleGroups, setMuscleGroups] = useState<string[]>(defaultMuscleGroups);
+  const [equipments, setEquipments] = useState<string[]>(defaultEquipments);
+  const [difficulties, setDifficulties] = useState<string[]>(defaultDifficulties);
+
   const handleShowForm = () => setShowForm(true);
 
-  // Check for loading or error states
+  // Log the raw data outside useEffect to see if it exists
+  console.log('Raw fetched data:', data?.getSavedExercises);
+
+  useEffect(() => {
+    if (data && data.getSavedExercises) {
+      console.log('useEffect triggered with data:', data);
+      const exercises: Exercise[] = data.getSavedExercises;
+
+      // Helper to extract unique non-empty string values
+      const getUniqueValues = (key: keyof Exercise): string[] => {
+        return Array.from(
+          new Set(
+            exercises
+              .map((exercise) => (exercise[key] as unknown) as string)
+              .filter((value) => value && value.trim() !== '')
+          )
+        );
+      };
+
+      const newTypes = getUniqueValues('type');
+      const newMuscleGroups = getUniqueValues('muscle');
+      const newEquipments = getUniqueValues('equipment');
+      const newDifficulties = getUniqueValues('difficulty');
+
+      // Log the computed values for debugging
+      console.log('Computed Types:', newTypes);
+      console.log('Computed Muscle Groups:', newMuscleGroups);
+      console.log('Computed Equipments:', newEquipments);
+      console.log('Computed Difficulties:', newDifficulties);
+
+      setTypes(newTypes.length ? newTypes : defaultTypes);
+      setMuscleGroups(newMuscleGroups.length ? newMuscleGroups : defaultMuscleGroups);
+      setEquipments(newEquipments.length ? newEquipments : defaultEquipments);
+      setDifficulties(newDifficulties.length ? newDifficulties : defaultDifficulties);
+    }
+  }, [data]);
+
   if (error) return <h2>Error fetching exercises: {error.message}</h2>;
+  if (loading) return <h2>LOADING...</h2>;
 
-  
-  if (loading) {
-    return <h2>LOADING...</h2>;
-  }
-
-  const exercises: Exercise[] = data?.ExerciseList || [];
-
-  const uniqueValuesFromExercises = (key: keyof Exercise) => [
-    ...new Set(exercises.map((exercise) => exercise[key]).filter(Boolean)),
-  ];
+  const exercises: Exercise[] = data?.getSavedExercises || [];
 
   const filteredExercisesList = exercises.filter((exercise) => {
     return (
       (!selectedType || exercise.type === selectedType) &&
-      (!selectedMuscle || exercise.muscle === selectedMuscle) &&
+      (!selectedMusclegroup || exercise.muscle === selectedMusclegroup) &&
       (!selectedEquipment || exercise.equipment === selectedEquipment) &&
       (!selectedDifficulty || exercise.difficulty === selectedDifficulty)
     );
   });
 
- return (
+  return (
     <>
       <div className='text-light bg-dark p-5'>
         <Container>
@@ -59,9 +96,7 @@ const ExerciseList: React.FC = () => {
       <Container>
         <h2 className='pt-5'>
           {filteredExercisesList.length
-            ? `Viewing ${filteredExercisesList.length} saved ${
-                filteredExercisesList.length === 1 ? 'exercise' : 'exercises'
-              }:`
+            ? `Viewing ${filteredExercisesList.length} saved ${filteredExercisesList.length === 1 ? 'exercise' : 'exercises'}:`
             : 'No exercises match your filters!'}
         </h2>
 
@@ -70,7 +105,7 @@ const ExerciseList: React.FC = () => {
           <Col md={3}>
             <Form.Select onChange={(e) => setSelectedType(e.target.value)} value={selectedType}>
               <option value=''>All Types</option>
-              {uniqueValuesFromExercises('type').map((type) => (
+              {types.map((type) => (
                 <option key={type} value={type}>
                   {type}
                 </option>
@@ -78,11 +113,14 @@ const ExerciseList: React.FC = () => {
             </Form.Select>
           </Col>
           <Col md={3}>
-            <Form.Select onChange={(e) => setSelectedMuscle(e.target.value)} value={selectedMuscle}>
-              <option value=''>All Muscles</option>
-              {uniqueValuesFromExercises('muscle').map((muscle) => (
-                <option key={muscle} value={muscle}>
-                  {muscle}
+            <Form.Select
+              onChange={(e) => setSelectedMusclegroup(e.target.value)}
+              value={selectedMusclegroup}
+            >
+              <option value=''>All Muscle Groups</option>
+              {muscleGroups.map((musclegroup) => (
+                <option key={musclegroup} value={musclegroup}>
+                  {musclegroup}
                 </option>
               ))}
             </Form.Select>
@@ -90,7 +128,7 @@ const ExerciseList: React.FC = () => {
           <Col md={3}>
             <Form.Select onChange={(e) => setSelectedEquipment(e.target.value)} value={selectedEquipment}>
               <option value=''>All Equipment</option>
-              {uniqueValuesFromExercises('equipment').map((equipment) => (
+              {equipments.map((equipment) => (
                 <option key={equipment} value={equipment}>
                   {equipment}
                 </option>
@@ -100,7 +138,7 @@ const ExerciseList: React.FC = () => {
           <Col md={3}>
             <Form.Select onChange={(e) => setSelectedDifficulty(e.target.value)} value={selectedDifficulty}>
               <option value=''>All Difficulties</option>
-              {uniqueValuesFromExercises('difficulty').map((difficulty) => (
+              {difficulties.map((difficulty) => (
                 <option key={difficulty} value={difficulty}>
                   {difficulty}
                 </option>
@@ -110,7 +148,7 @@ const ExerciseList: React.FC = () => {
         </Row>
 
         <Row>
-          {/* This is our exercise card layout */}
+          {/* Exercise card layout */}
           {filteredExercisesList.map((exercise) => (
             <Col md='4' key={exercise._id}>
               <Card border='dark'>
@@ -128,7 +166,7 @@ const ExerciseList: React.FC = () => {
           ))}
         </Row>
 
-          {/* This is a button to open the WorkoutCreator, any other ideas??? */}
+        {/* Button to open the WorkoutCreator */}
         <Button variant='primary' onClick={handleShowForm}>
           Create Workout
         </Button>
