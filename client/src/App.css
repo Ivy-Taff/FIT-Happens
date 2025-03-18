@@ -399,9 +399,11 @@ h6 {
 }
 
 p {
-  font-size: 1.1rem;
+  font-size: 4.1rem;
+  font-family: 'JetBrains Mono', monospace;
   margin: 0 0 1rem;
   line-height: 1.5;
+  color: #ffffff;
 }
 
 ul,
@@ -1714,4 +1716,13 @@ body {
   background-repeat: no-repeat;
   height: 100vh;
   width: 100vw;
+}
+
+.navbar-brand {
+  font-size: 4.5rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.nav-link {
+  font-family: 'JetBrains Mono', monospace;
 }
