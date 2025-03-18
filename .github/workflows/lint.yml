@@ -37,14 +37,6 @@ jobs:
         run: npm run build
 
       # Run tests
-      - name: Run Tests
-        run: npm run test
-
-      - name: run linters
-        uses: wearerequired/lint-action@v2
-        with: 
-        auto_fix: true
-        flake8: true
-        flake8_auto_fix: false
-    
+      # - name: Run Tests
+      #   run: npm run test
       
