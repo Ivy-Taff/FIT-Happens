@@ -60,7 +60,7 @@ export const GET_WORKOUT = gql`
 `;
 
 export const GET_USER_WORKOUTS = gql`
-query GetUserWorkouts($userId: ID!) {
+query GetUserWorkouts($userId: String!) {
   userWorkouts(userId: $userId) {
     name
     userId

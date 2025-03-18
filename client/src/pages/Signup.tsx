@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-import '../styles/styles.css';
-
-const Signup = () => {
-=======
 import { useState, type FormEvent, type ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
->>>>>>> 90b425b25f9b3b2b16346f724bbc8993b4fc9622
 
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
@@ -28,7 +22,7 @@ const Signup = () => {
       ...formState,
       [name]: value,
     });
-
+  }
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
 

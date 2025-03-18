@@ -32,10 +32,10 @@ const WorkoutCalendar: React.FC = () => {
   if (loading) return <p>Loading workouts...</p>;
   if (error) return <p>Error loading workouts</p>;
 
-  // Assume that the query returns an array of workouts in data.getSavedWorkouts
-  const workouts: Workout[] = data.getSavedWorkouts;
+  // returns an array of workouts in data.GetUserWorkouts
+  const workouts: Workout[] = data.GetUserWorkouts;
 
-  // When a drag starts, we store the workout's ID in the drag event's dataTransfer object.
+  // When a drag starts,store the workout's ID in the drag event's object.
   const handleDragStart = (event: React.DragEvent<HTMLDivElement>, workout: Workout) => {
     event.dataTransfer.setData("workoutId", workout._id);
   };
@@ -116,7 +116,7 @@ const WorkoutCalendar: React.FC = () => {
         ))}
       </div>
 
-      {/* List of available workouts that are draggable */}
+      {/* List of available workouts */}
       <h3>Available Workouts</h3>
       <div className="workout-list" style={{ display: "flex", flexWrap: "wrap" }}>
         {workouts.map((workout) => (
