@@ -4,9 +4,6 @@ import { DELETE_WORKOUT, REMOVE_EXERCISE_FROM_WORKOUT } from "../utils/mutations
 import { useState } from "react";
 import { Exercise } from "../interfaces/Exercise";
 
-interface SavedWorkoutsProps {
-    userId: string;
-}
 
 interface Workout {
     _id: string;
@@ -18,9 +15,11 @@ interface GetUserWorkoutsData {
     getUserWorkouts: Workout[];
 }
 
-const SavedWorkouts: React.FC<SavedWorkoutsProps> = ({ userId }) => {
+const storedUserId = localStorage.getItem('userId') || '';
+
+const SavedWorkouts: React.FC = () => {
     const { loading, error, data, refetch } = useQuery<GetUserWorkoutsData>(GET_USER_WORKOUTS, {
-        variables: { userId },
+        variables: { storedUserId },
     });
     const [deleteWorkout] = useMutation(DELETE_WORKOUT);
     const [removeExercise] = useMutation(REMOVE_EXERCISE_FROM_WORKOUT);
