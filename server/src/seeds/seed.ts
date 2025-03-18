@@ -1,7 +1,6 @@
 import db from '../config/connection.js';
-import { User, Exercise } from '../models/index.js';
+import { User } from '../models/index.js';
 import cleanDB from './cleanDB.js';
-import axios from 'axios';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -20,50 +19,7 @@ const seedDatabase = async (): Promise<void> => {
   try {
     await db();
     await cleanDB();
-
-    
     await User.create(userData);
-
-    // Fetch exercises from external API
-    const { data } = await axios.get(EXTERNAL_API_URL, {
-      headers: { 'X-Api-Key': X_API_KEY }
-    });
-
-    for (const ex of data) {
-      const existingExercise = await Exercise.findOne({ _id: ex._id });
-
-      if (existingExercise) {
-        // Check for changes and update if necessary
-        if (
-          existingExercise.name !== ex.name ||
-          existingExercise.type !== ex.type ||
-          existingExercise.muscle !== ex.muscle ||
-          existingExercise.equipment !== ex.equipment ||
-          existingExercise.difficulty !== ex.difficulty ||
-          existingExercise.instructions !== ex.instructions
-        ) {
-          existingExercise.name = ex.name;
-          existingExercise.type = ex.type;
-          existingExercise.muscle = ex.muscle;
-          existingExercise.equipment = ex.equipment;
-          existingExercise.difficulty = ex.difficulty;
-          existingExercise.instructions = ex.instructions;
-          await existingExercise.save();
-        }
-      } else {
-        // Insert new exercise
-        const newExercise = new Exercise({
-          _id: ex._id,
-          name: ex.name,
-          type: ex.type,
-          muscle: ex.muscle,
-          equipment: ex.equipment,
-          difficulty: ex.difficulty,
-          instructions: ex.instructions,
-        });
-        await newExercise.save();
-      }
-    }
 
     console.log('Seeding completed successfully!');
     process.exit(0);
