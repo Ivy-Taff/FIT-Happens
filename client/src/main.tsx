@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import ErrorPage from './pages/Error';
 import ExerciseList from './pages/ExerciseList.js';
 import WorkoutCalendar from './components/WorkoutCalendar.js';
+import SavedWorkouts from './pages/SavedWorkouts.js';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,9 @@ const router = createBrowserRouter([
       }, {
         path: '/calendar',
         element: <WorkoutCalendar />
+      }, {
+        path: '/saved',
+        element: <SavedWorkouts />
       }
     ]
   },
