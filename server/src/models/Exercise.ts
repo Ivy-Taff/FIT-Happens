@@ -18,6 +18,6 @@ const exerciseSchema = new Schema({
     instructions: { type: String }
 });
 
-const exercise = model<ExerciseDocument>('exercise', exerciseSchema);
+const exercise = model<ExerciseDocument>('Exercise', exerciseSchema);
 
 export default exercise;

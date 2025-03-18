@@ -25,7 +25,6 @@ const ExerciseList: React.FC = () => {
 
   
   const handleShowForm = () => setShowForm(true);
-  const handleHideForm = () => setShowForm(false);
 
   // Check for loading or error states
   if (error) return <h2>Error fetching exercises: {error.message}</h2>;
@@ -136,7 +135,7 @@ const ExerciseList: React.FC = () => {
 
         {showForm && (
           <div className='mt-5'>
-            <CreateWorkout userId={storedUserId} closeForm={handleHideForm} />
+            <CreateWorkout userId={storedUserId} />
           </div>
         )}
       </Container>
