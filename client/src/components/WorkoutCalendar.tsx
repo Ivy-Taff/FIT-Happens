@@ -36,9 +36,9 @@ const WorkoutCalendar: React.FC = () => {
   const workouts: Workout[] = data.GetUserWorkouts;
 
   // When a drag starts,store the workout's ID in the drag event's object.
-  const handleDragStart = (event: React.DragEvent<HTMLDivElement>, workout: Workout) => {
-    event.dataTransfer.setData("workoutId", workout._id);
-  };
+  // const handleDragStart = (event: React.DragEvent<HTMLDivElement>, workout: Workout) => {
+  //   event.dataTransfer.setData("workoutId", workout._id);
+  // };
 
   // Allow drop by preventing the default behavior.
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -119,7 +119,7 @@ const WorkoutCalendar: React.FC = () => {
       {/* List of available workouts */}
       <h3>Available Workouts</h3>
       <div className="workout-list" style={{ display: "flex", flexWrap: "wrap" }}>
-        {workouts.map((workout) => (
+        {/* {workouts.map((workout) => (
           <div
             key={workout._id}
             className="workout-card"
@@ -136,7 +136,7 @@ const WorkoutCalendar: React.FC = () => {
           >
             <p>{workout.name}</p>
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

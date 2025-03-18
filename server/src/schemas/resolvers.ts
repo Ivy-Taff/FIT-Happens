@@ -26,7 +26,7 @@ interface LoginUserArgs {
 }
 
 interface UserArgs {
-  username: string;
+  userId: string;
 }
 
 
@@ -50,7 +50,7 @@ interface AddExerciseArgs {
     equipment?: string;
     difficulty?: string;
     instructions?: string;
-  };
+  }
 }
 
 interface AddWorkoutArgs {
@@ -74,8 +74,8 @@ const resolvers = {
     users: async () => {
       return User.find().populate('workouts');
     },
-    user: async (_parent: any, { username }: UserArgs) => {
-      return User.findOne({ username }).populate('workouts');
+    user: async (_parent: any, { userId }: UserArgs) => {
+      return User.findOne({ userId }).populate('workouts');
     },
     me: async (_parent: any, _args: any, context: any) => {
       if (context.user) {
@@ -91,8 +91,14 @@ const resolvers = {
     },
 
     // Query to get user workouts
-    getUserWorkouts: async (_: unknown, { userId }: { userId: string }) => {
-      return await Workout.find({ userId }).populate("exercises");
+    getUserWorkouts: async (_parent: any, _args: any, context: any) => {
+      if (context.user) {
+        return await User.findOne({ _id: context.user._id }).populate('workouts').populate({
+          path: "workouts", 
+          populate: "exercises",
+        });
+      }
+      throw new AuthenticationError('Could not authenticate user.');
     },
 
     exercises: async () => {
@@ -179,6 +185,7 @@ const resolvers = {
         exercises: exerciseIds,
         createdAt: new Date(),
       });
+      await User.findOneAndUpdate({_id: context.user._id}, {$addToSet: {workouts: workout._id}}, {new: true})
       return await workout.save();
     },
 
