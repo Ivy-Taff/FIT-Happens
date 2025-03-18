@@ -3,17 +3,16 @@ import { GET_SAVED_EXERCISES } from "../utils/queries";
 import { REMOVE_EXERCISE_FROM_WORKOUT } from "../utils/mutations";
 import { CREATE_WORKOUT, UPDATE_WORKOUT } from "../utils/mutations";
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Exercise } from "../models/Exercise";
+import { useParams } from "react-router-dom";
+import { Exercise } from "../interfaces/Exercise";
 
 interface WorkoutCreatorProps {
     userId: string;
-    closeForm: () => void;
 }
 
-const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId, closeForm }) => {
+const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId }) => {
     const { workoutId } = useParams<{ workoutId: string }>();  // Get the workoutId from URL params
-    const navigate = useNavigate();  // For redirecting after creating/updating
+    // const navigate = useNavigate();  // For redirecting after creating/updating
     const { loading, error, data } = useQuery(GET_SAVED_EXERCISES);
     const [createWorkout] = useMutation(CREATE_WORKOUT);
     const [updateWorkout] = useMutation(UPDATE_WORKOUT); // Mutation to update existing workout
@@ -21,6 +20,9 @@ const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId, closeForm }) =>
   
     const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
     const [workoutName, setWorkoutName] = useState("");
+    const [ errorMessage, setErrorMessage ] = useState<string>("");
+    const [successMessage, setSuccessMessage] = useState("");
+  
     
     useEffect(() => {
         if (workoutId) {
@@ -34,6 +36,7 @@ const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId, closeForm }) =>
         }
       }, [workoutId, data]);
 
+  // if (!showForm) return null;
   if (loading) return <p>Loading exercises...</p>;
   if (error) return <p>Error loading exercises</p>;
 
@@ -66,6 +69,10 @@ const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId, closeForm }) =>
 
   const handleSubmitWorkout = async (event: React.FormEvent) => {
     event?.preventDefault();
+    if (!workoutName.trim()) {
+      setErrorMessage("Please enter a workout name.");
+      return;
+  }
     try {
         if (workoutId) {
           // Update workout if editing an existing one
@@ -88,15 +95,23 @@ const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId, closeForm }) =>
           });
           console.log("Workout created:", data.createWorkout);
         }
-        navigate("/workouts"); // Redirect after creation or update
+        setSuccessMessage("Workout saved successfully!");
+        setErrorMessage("");
+        setWorkoutName("");
+        setSelectedExercises([]);
+
+// This will make the success message go away
+        setTimeout(() => {
+          setSuccessMessage("");
+      }, 3000);
+
       } catch (error) {
         console.error("Error saving workout:", error);
       }
-      closeForm();
     };
 
     return (
-        <div>
+        <section>
           <h2>{workoutId ? "Edit Workout" : "Create a Workout"}</h2>
           <input
             type="text"
@@ -141,7 +156,11 @@ const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId, closeForm }) =>
           <button onClick={handleSubmitWorkout}>
             {workoutId ? "Update Workout" : "Create Workout"}
           </button>
-        </div>
+          <section>
+            {successMessage && <p className="success-message">{successMessage}</p>} 
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+          </section>
+        </section>
       );
     };
 

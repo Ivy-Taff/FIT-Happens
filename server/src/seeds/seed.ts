@@ -11,12 +11,17 @@ const X_API_KEY = process.env.X_API_KEY as string;
 
 import userData from './userData.json' with { type: 'json' };
 
+if (!EXTERNAL_API_URL || !X_API_KEY) {
+  console.error('Missing environment variables. Please check your .env file');
+  process.exit(1);
+}
+
 const seedDatabase = async (): Promise<void> => {
   try {
     await db();
     await cleanDB();
 
-    // Seed user data
+    
     await User.create(userData);
 
     // Fetch exercises from external API
@@ -24,18 +29,41 @@ const seedDatabase = async (): Promise<void> => {
       headers: { 'X-Api-Key': X_API_KEY }
     });
 
-    const exercises = data.map((ex: any) => ({
-      _id: ex._id,
-      name: ex.name,
-      type: ex.type,
-      muscle: ex.muscle,
-      equipment: ex.equipment,
-      difficulty: ex.difficulty,
-      instructions: ex.instructions,
-    }));
+    for (const ex of data) {
+      const existingExercise = await Exercise.findOne({ _id: ex._id });
 
-    // Seed exercise data
-    await Exercise.insertMany(exercises);
+      if (existingExercise) {
+        // Check for changes and update if necessary
+        if (
+          existingExercise.name !== ex.name ||
+          existingExercise.type !== ex.type ||
+          existingExercise.muscle !== ex.muscle ||
+          existingExercise.equipment !== ex.equipment ||
+          existingExercise.difficulty !== ex.difficulty ||
+          existingExercise.instructions !== ex.instructions
+        ) {
+          existingExercise.name = ex.name;
+          existingExercise.type = ex.type;
+          existingExercise.muscle = ex.muscle;
+          existingExercise.equipment = ex.equipment;
+          existingExercise.difficulty = ex.difficulty;
+          existingExercise.instructions = ex.instructions;
+          await existingExercise.save();
+        }
+      } else {
+        // Insert new exercise
+        const newExercise = new Exercise({
+          _id: ex._id,
+          name: ex.name,
+          type: ex.type,
+          muscle: ex.muscle,
+          equipment: ex.equipment,
+          difficulty: ex.difficulty,
+          instructions: ex.instructions,
+        });
+        await newExercise.save();
+      }
+    }
 
     console.log('Seeding completed successfully!');
     process.exit(0);
