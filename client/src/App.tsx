@@ -38,7 +38,7 @@ function App() {
     <ApolloProvider client={client}>
       <div className="flex-column justify-flex-start min-100-vh">
         <NavigationBar/>
-        <div className="container">
+        <div className="app-container">
           <Outlet />
         </div>
       </div>

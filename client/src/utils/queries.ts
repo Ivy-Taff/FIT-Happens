@@ -6,12 +6,12 @@ export const QUERY_USER = gql`
       _id
       username
       email
-      workouts {[
+      workouts {
         _id
         exercises
         currentDate
         # I am not sur if current date is appropriate here?
-      ]}
+      }
     }
   }
 `;
@@ -22,12 +22,12 @@ export const QUERY_ME = gql`
       _id
       username
       email
-      workouts {[
+      workouts {
         _id
         exercises
         currentDate
         # I am not sur if current date is appropriate here?
-      ]}
+      }
     }
   }
 `;

@@ -4,8 +4,12 @@ import { useQuery } from '@apollo/client';
 import { Container, Card, Row, Col, Button, Form } from 'react-bootstrap';
 import { GET_SAVED_EXERCISES } from '../utils/queries';
 import CreateWorkout from '../components/WorkoutCreator';
+<<<<<<< HEAD
 import { Exercise } from '../models/Exercise';
 import '../styles/styles.css';
+=======
+import { Exercise } from '../interfaces/Exercise'
+>>>>>>> 90b425b25f9b3b2b16346f724bbc8993b4fc9622
 
 interface SavedExercisesData {
   ExerciseList: Exercise[];
