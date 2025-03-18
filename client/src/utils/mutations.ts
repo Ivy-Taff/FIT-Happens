@@ -27,11 +27,14 @@ export const ADD_USER = gql`
 `;
 
 export const CREATE_WORKOUT = gql`
-  mutation CreateWorkout($name: String!, $userId: ID!, $exerciseIds: [ID!]!) {
-    createWorkout(name: $name, userId: $userId, exerciseIds: $exerciseIds) {
+  mutation CreateWorkout($name: String!, $exerciseIds: [ID!]!) {
+    createWorkout(name: $name, exerciseIds: $exerciseIds) {
       _id
       name
-      username
+      exercises {
+        _id
+      }
+      createdAt
     }
   }
 `;
