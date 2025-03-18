@@ -2,32 +2,23 @@ import { useQuery, useMutation } from "@apollo/client";
 import { GET_USER_WORKOUTS } from "../utils/queries";
 import { DELETE_WORKOUT, REMOVE_EXERCISE_FROM_WORKOUT } from "../utils/mutations";
 import { useState } from "react";
-import { Exercise } from "../interfaces/Exercise";
+import { User } from "../interfaces/User"
 
 
-interface Workout {
-    _id: string;
-    name: string;
-    exercises: Exercise[];
-}
 
 interface GetUserWorkoutsData {
-    getUserWorkouts: Workout[];
+    getUserWorkouts: User;
 }
 
-const storedUserId = localStorage.getItem('userId') || '';
-
 const SavedWorkouts: React.FC = () => {
-    const { loading, error, data, refetch } = useQuery<GetUserWorkoutsData>(GET_USER_WORKOUTS, {
-        variables: { storedUserId },
-    });
+    const { loading, error, data, refetch } = useQuery<GetUserWorkoutsData>(GET_USER_WORKOUTS);
     const [deleteWorkout] = useMutation(DELETE_WORKOUT);
     const [removeExercise] = useMutation(REMOVE_EXERCISE_FROM_WORKOUT);
     const [successMessage, setSuccessMessage] = useState("");
 
     if (loading) return <p>Loading workouts...</p>;
     if (error) return <p>Error loading workouts</p>;
-
+    console.log(data?.getUserWorkouts.workouts[0].exercises);
     const handleDeleteWorkout = async (workoutId: string) => {
         try {
             await deleteWorkout({ variables: { workoutId } });
@@ -52,11 +43,11 @@ const SavedWorkouts: React.FC = () => {
         <section>
             <h2>Saved Workouts</h2>
             {successMessage && <p className="success-message">{successMessage}</p>}
-            {data?.getUserWorkouts.length === 0 ? (
+            {data?.getUserWorkouts.workouts.length === 0 ? (
                 <p>No workouts saved yet.</p>
             ) : (
                 <ul>
-                    {data?.getUserWorkouts.map((workout) => (
+                    {data?.getUserWorkouts.workouts.map((workout) => (
                         <li key={workout._id}>
                             <h3>{workout.name}</h3>
                             <ul>

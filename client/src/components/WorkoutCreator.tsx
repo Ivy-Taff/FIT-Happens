@@ -6,11 +6,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Exercise } from "../interfaces/Exercise";
 
-interface WorkoutCreatorProps {
-    userId: string;
-}
 
-const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId }) => {
+const WorkoutCreator = () => {
     const { workoutId } = useParams<{ workoutId: string }>();  // Get the workoutId from URL params
     // const navigate = useNavigate();  // For redirecting after creating/updating
     const { loading, error, data } = useQuery(GET_SAVED_EXERCISES);
@@ -22,7 +19,7 @@ const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId }) => {
     const [workoutName, setWorkoutName] = useState("");
     const [ errorMessage, setErrorMessage ] = useState<string>("");
     const [successMessage, setSuccessMessage] = useState("");
-  
+ 
     
     useEffect(() => {
         if (workoutId) {
@@ -50,7 +47,8 @@ const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId }) => {
 
   const handleRemoveExercise = async (exerciseId: string) => {
     setSelectedExercises((prev) => prev.filter((id) => id !== exerciseId)); // Remove from list
-    
+  
+
     // This is calling the removeExercise mutation
     if (workoutId) {
         try {
@@ -89,7 +87,6 @@ const WorkoutCreator: React.FC<WorkoutCreatorProps> = ({ userId }) => {
           const { data } = await createWorkout({
             variables: {
               name: workoutName,
-              userId,
               exerciseIds: selectedExercises,
             },
           });
