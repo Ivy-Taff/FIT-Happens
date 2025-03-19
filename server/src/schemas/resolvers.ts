@@ -1,5 +1,4 @@
 
-import axios from "axios";
 import { User, Workout, Exercise } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 
@@ -7,9 +6,6 @@ import { signToken, AuthenticationError } from '../utils/auth.js';
 import dotenv from "dotenv";
 
 dotenv.config();
-
-const EXTERNAL_API_URL = process.env.EXTERNAL_API_URL as string;
-const X_API_KEY = process.env.X_API_KEY as string;
 
 // Define types for the arguments
 interface AddUserArgs {
@@ -135,47 +131,13 @@ const resolvers = {
       return { token, user };
     },
 
-
-    fetchAndStoreExercises: async () => {
-      try {
-        const { data } = await axios.get(EXTERNAL_API_URL, {
-          headers: { "X_API_KEY": X_API_KEY }
-        });
-
-        const savedExercises = [];
-
-        for (const ex of data.exercises) {
-          let existingExercise = await Exercise.findOne({ _id: ex._id });
-
-          if (!existingExercise) {
-            const newExercise = new Exercise({
-              _id: ex._id,
-              name: ex.name,
-              type: ex.type,
-              muscle: ex.muscle,
-              equipment: ex.equipment,
-              difficulty: ex.difficulty,
-              instructions: ex.instructions,
-            });
-            savedExercises.push(await newExercise.save());
-          }
-        }
-        return savedExercises;
-      } catch (error) {
-        throw new Error("Error fetching exercises");
-      }
-    },
-
-
     addExercise: async (_parent: any, { input }: AddExerciseArgs) => {
       return Exercise.create({ ...input });
     },
 
     addWorkout: async (_parent: any, { input }: AddWorkoutArgs) => {
       return Workout.create({ ...input });
-    }
-
-    ,
+    },
 
     createWorkout: async (_: unknown, { name, exerciseIds }: CreateWorkoutArgs, context: UserContext
     ) => {
@@ -225,6 +187,14 @@ const resolvers = {
       }
 
       return updatedWorkout;
+    },
+
+    deleteWorkout: async (_: unknown, { workoutId }: { workoutId: string }) => {
+      const deletedWorkout = await Workout.findByIdAndDelete(workoutId);
+      if (!deletedWorkout) {
+        throw new Error("Workout not found");
+      }
+      return deletedWorkout;
     },
   }
 };
