@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_USER_WORKOUTS } from "../utils/queries";
 import { Workout } from "../interfaces/Workout"; // Make sure you have this model defined
-
+import "../assets/WorkoutCalendar.css";
 
 const daysOfWeek = [
   "Monday",
@@ -85,13 +85,6 @@ const WorkoutCalendar: React.FC = () => {
             className="day-slot"
             onDragOver={handleDragOver}
             onDrop={(event) => handleDrop(event, day)}
-            style={{
-              flex: 1,
-              border: "1px solid #ccc",
-              margin: "5px",
-              padding: "5px",
-              minHeight: "200px",
-            }}
           >
             <h3>{day}</h3>
             {schedule[day] &&
@@ -99,12 +92,6 @@ const WorkoutCalendar: React.FC = () => {
                 <div
                   key={workout._id}
                   className="workout-card"
-                  style={{
-                    border: "1px solid #000",
-                    margin: "5px 0",
-                    padding: "5px",
-                    background: "#f9f9f9",
-                  }}
                 >
                   <p>{workout.name}</p>
                   <button onClick={() => removeWorkoutFromDay(day, workout._id)}>
