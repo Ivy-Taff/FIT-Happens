@@ -107,7 +107,10 @@ const ExerciseList: React.FC = () => {
               <option value=''>All Types</option>
               {types.map((type) => (
                 <option key={type} value={type}>
-                  {type}
+                  {(() => {
+                    const formatted = type.replace(/_/g, ' ');
+                    return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
+                  })()}
                 </option>
               ))}
             </Form.Select>
@@ -120,7 +123,10 @@ const ExerciseList: React.FC = () => {
               <option value=''>All Muscle Groups</option>
               {muscleGroups.map((musclegroup) => (
                 <option key={musclegroup} value={musclegroup}>
-                  {musclegroup}
+                  {(() => {
+                    const formatted = musclegroup.replace(/_/g, ' ');
+                    return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
+                  })()}
                 </option>
               ))}
             </Form.Select>
@@ -130,7 +136,10 @@ const ExerciseList: React.FC = () => {
               <option value=''>All Equipment</option>
               {equipments.map((equipment) => (
                 <option key={equipment} value={equipment}>
-                  {equipment}
+                  {(() => {
+                    const formatted = equipment.replace(/_/g, ' ');
+                    return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
+                  })()}
                 </option>
               ))}
             </Form.Select>
@@ -140,7 +149,10 @@ const ExerciseList: React.FC = () => {
               <option value=''>All Difficulties</option>
               {difficulties.map((difficulty) => (
                 <option key={difficulty} value={difficulty}>
-                  {difficulty}
+                  {(() => {
+                    const formatted = difficulty.replace(/_/g, ' ');
+                    return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
+                  })()}
                 </option>
               ))}
             </Form.Select>
@@ -173,7 +185,7 @@ const ExerciseList: React.FC = () => {
 
         {showForm && (
           <div className='mt-5'>
-            <CreateWorkout userId={storedUserId} />
+            <CreateWorkout />
           </div>
         )}
       </Container>
