@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import { Container, Card, Row, Col, Button, Form } from 'react-bootstrap';
+import { Container, Card, Row, Col, Form } from 'react-bootstrap';
 import { GET_SAVED_EXERCISES } from '../utils/queries';
-import CreateWorkout from '../components/WorkoutCreator';
 import { Exercise } from '../interfaces/Exercise';
 
 // Update interface field to match query response key

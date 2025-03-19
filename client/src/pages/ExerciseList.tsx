@@ -91,16 +91,12 @@ const ExerciseList: React.FC = () => {
   };
 
   const buttonStyle = {
-    transition: 'transform 0.3s ease, background-color 0.3s ease',
-  };
-
-  const titleStyle = {
-    fontFamily: 'Roboto, sans-serif',
     fontSize: '1.5rem',
     marginTop: '20px',
     textAlign: 'left',
-    color: '#fff', 
+    color: 'white',
   };
+
 
   return (
     <>
@@ -125,7 +121,7 @@ const ExerciseList: React.FC = () => {
             </div>
           )}
 
-          <h2 style={titleStyle}>
+          <h2 style={{ fontFamily: 'Roboto, sans-serif', fontSize: '3rem', marginTop: '20px', textAlign: 'center', color: '#fff' }}>
             {filteredExercisesList.length
               ? `Viewing ${filteredExercisesList.length} ${
                   filteredExercisesList.length === 1 ? 'exercise' : 'exercises'
