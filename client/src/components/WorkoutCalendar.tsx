@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_USER_WORKOUTS } from "../utils/queries";
 import { Workout } from "../interfaces/Workout"; // Make sure you have this model defined
-
+import { User } from "../interfaces/User"; // Make sure you have this model defined
 
 const daysOfWeek = [
   "Monday",
@@ -14,8 +14,12 @@ const daysOfWeek = [
   "Sunday",
 ];
 
+interface GetUserWorkoutsData {
+    getUserWorkouts: User;
+}
+
 const WorkoutCalendar: React.FC = () => {
-  const { loading, error, data } = useQuery(GET_USER_WORKOUTS);
+  const { loading, error, data } = useQuery<GetUserWorkoutsData>(GET_USER_WORKOUTS);
   
   // State to track workouts assigned to each day
   const [schedule, setSchedule] = useState<{ [day: string]: Workout[] }>({});
@@ -27,18 +31,20 @@ const WorkoutCalendar: React.FC = () => {
       initialSchedule[day] = [];
     });
     setSchedule(initialSchedule);
+    console.log(data?.getUserWorkouts)
   }, []);
 
   if (loading) return <p>Loading workouts...</p>;
   if (error) return <p>Error loading workouts</p>;
 
   // returns an array of workouts in data.GetUserWorkouts
-  const workouts: Workout[] = data.GetUserWorkouts;
+  const workouts: Workout[] = data?.getUserWorkouts.workouts || [];
+  
 
   // When a drag starts,store the workout's ID in the drag event's object.
-  // const handleDragStart = (event: React.DragEvent<HTMLDivElement>, workout: Workout) => {
-  //   event.dataTransfer.setData("workoutId", workout._id);
-  // };
+  const handleDragStart = (event: React.DragEvent<HTMLDivElement>, workout: Workout) => {
+    event.dataTransfer.setData("workoutId", workout._id);
+  };
 
   // Allow drop by preventing the default behavior.
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -119,7 +125,7 @@ const WorkoutCalendar: React.FC = () => {
       {/* List of available workouts */}
       <h3>Available Workouts</h3>
       <div className="workout-list" style={{ display: "flex", flexWrap: "wrap" }}>
-        {/* {workouts.map((workout) => (
+        {workouts.map((workout) => (
           <div
             key={workout._id}
             className="workout-card"
@@ -136,7 +142,7 @@ const WorkoutCalendar: React.FC = () => {
           >
             <p>{workout.name}</p>
           </div>
-        ))} */}
+        ))}
       </div>
     </div>
   );

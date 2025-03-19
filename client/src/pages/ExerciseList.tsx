@@ -10,8 +10,6 @@ interface SavedExercisesData {
   getSavedExercises: Exercise[];
 }
 
-// not sure how userId is coming in on signup, this is assuming we are saving them in local
-const storedUserId = localStorage.getItem('userId') || '';
 
 // Default fallback values based on your provided sample response
 const defaultTypes = ['strongman'];
