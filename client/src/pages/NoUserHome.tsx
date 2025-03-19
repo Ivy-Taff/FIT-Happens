@@ -3,9 +3,12 @@
 const NoUserHome: React.FC = () => {
     return (
         <section>
-            <h2>Welcome to Workout Buddy!</h2>
-            <p>Please log in or sign up to access your personalized workout experience.</p>
-            <p>Once logged in, you can save your workouts, track your progress, and much more!</p>
+            <h2>Welcome to FIT Happens!</h2> 
+            <p>Please sign up or login!</p>
+            <img
+            src="https://media.gettyimages.com/id/155597208/photo/dumbbells.jpg?s=612x612&w=0&k=20&c=9k4LhL-4PWFbtT5Y117KL0g_2xOw2ClMIvjm5myS4Q0="
+            alt="Fitness illustration"
+            />
         </section>
     );
 }
