@@ -189,12 +189,15 @@ const resolvers = {
       return updatedWorkout;
     },
 
-    deleteWorkout: async (_: unknown, { workoutId }: { workoutId: string }) => {
-      const deletedWorkout = await Workout.findByIdAndDelete(workoutId);
+    deleteWorkout: async (_: unknown, { id }: { id: string }) => {
+      const deletedWorkout = await Workout.findByIdAndDelete(id);
       if (!deletedWorkout) {
         throw new Error("Workout not found");
       }
-      return deletedWorkout;
+      return {
+        _id: deletedWorkout._id,
+        name: deletedWorkout.name,
+      };
     },
   }
 };
