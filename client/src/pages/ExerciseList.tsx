@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-
-import { useState } from 'react';
-=======
 import { useState, useEffect } from 'react';
->>>>>>> c84cdd32a6073eed2f3dea0a6b1a1a5f0cbaca8c
 import { useQuery } from '@apollo/client';
 import { Container, Card, Row, Col, Button, Form } from 'react-bootstrap';
 import { GET_SAVED_EXERCISES } from '../utils/queries';
@@ -190,7 +185,7 @@ const ExerciseList: React.FC = () => {
 
         {showForm && (
           <div className='mt-5'>
-            <CreateWorkout userId={storedUserId} />
+            <CreateWorkout />
           </div>
         )}
       </Container>

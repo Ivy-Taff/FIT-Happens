@@ -18,7 +18,6 @@ const SavedWorkouts: React.FC = () => {
 
     if (loading) return <p>Loading workouts...</p>;
     if (error) return <p>Error loading workouts</p>;
-    console.log(data?.getUserWorkouts.workouts[0].exercises);
     const handleDeleteWorkout = async (workoutId: string) => {
         try {
             await deleteWorkout({ variables: { workoutId } });
@@ -51,7 +50,7 @@ const SavedWorkouts: React.FC = () => {
                         <li key={workout._id}>
                             <h3>{workout.name}</h3>
                             <ul>
-                                {workout.exercises.map((exercise) => (
+                                {workout.exercises.map((exercise: any) => (
                                     <li key={exercise._id}>
                                         {exercise.name}
                                         <button onClick={() => handleRemoveExercise(workout._id, exercise._id)}>❌</button>
