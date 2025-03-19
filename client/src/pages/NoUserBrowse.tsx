@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import { Container, Card, Row, Col, Button, Form } from 'react-bootstrap';
+import { Container, Card, Row, Col, Form } from 'react-bootstrap';
 import { GET_SAVED_EXERCISES } from '../utils/queries';
-import CreateWorkout from '../components/WorkoutCreator';
 import { Exercise } from '../interfaces/Exercise';
 
 // Update interface field to match query response key
@@ -17,9 +16,8 @@ const defaultMuscleGroups = ['forearms'];
 const defaultEquipments = ['other'];
 const defaultDifficulties = ['beginner'];
 
-const ExerciseList: React.FC = () => {
+const NoUserBrowse: React.FC = () => {
   const { loading, error, data } = useQuery<SavedExercisesData>(GET_SAVED_EXERCISES);
-  const [showForm, setShowForm] = useState<boolean>(false);
   const [selectedType, setSelectedType] = useState('');
   const [selectedMusclegroup, setSelectedMusclegroup] = useState('');
   const [selectedEquipment, setSelectedEquipment] = useState('');
@@ -31,7 +29,6 @@ const ExerciseList: React.FC = () => {
   const [equipments, setEquipments] = useState<string[]>(defaultEquipments);
   const [difficulties, setDifficulties] = useState<string[]>(defaultDifficulties);
 
-  const handleShowForm = () => setShowForm(true);
 
   useEffect(() => {
     if (data && data.getSavedExercises) {
@@ -76,52 +73,33 @@ const ExerciseList: React.FC = () => {
 
   // Inline styles for the container div
   const containerStyle = {
-    backgroundColor: '#1a1a1a', 
-    borderRadius: '5px', 
-    padding: '20px', 
-    margin: '20px auto', 
-    color: 'white', 
-    maxWidth: '1200px', 
+    backgroundColor: '#1a1a1a', // Lighter black background
+    borderRadius: '5px', // Rounded corners
+    padding: '20px', // Padding inside the div
+    margin: '20px auto', // Margin on top and sides
+    color: 'white', // Text color
+    maxWidth: '1200px', // Center the content with a max width
   };
 
-  const buttonContainerStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: '20px', 
-  };
 
-  const buttonStyle = {
+  const titleStyle = {
+    fontFamily: 'Roboto, sans-serif',
     fontSize: '1.5rem',
     marginTop: '20px',
     textAlign: 'left',
-    color: 'white',
+    color: '#fff',
   };
 
+ 
 
   return (
     <>
-      <div id="exercise-list-container" style={containerStyle}>
+
+      
+      <div style={containerStyle}>
         <Container>
-          {/* Centered Button */}
-          <div style={buttonContainerStyle}>
-            <Button
-              style={buttonStyle}
-              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
-              onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-              variant="primary"
-              onClick={handleShowForm}
-            >
-              Create Workout
-            </Button>
-          </div>
 
-          {showForm && (
-            <div className="mt-5">
-              <CreateWorkout />
-            </div>
-          )}
-
-          <h2 style={{ fontFamily: 'Roboto, sans-serif', fontSize: '3rem', marginTop: '20px', textAlign: 'center', color: '#fff' }}>
+          <h2 style={titleStyle}>
             {filteredExercisesList.length
               ? `Viewing ${filteredExercisesList.length} ${
                   filteredExercisesList.length === 1 ? 'exercise' : 'exercises'
@@ -194,7 +172,7 @@ const ExerciseList: React.FC = () => {
                 <Card
                   style={{
                     backgroundColor: '#1a1a1a', // Dark background for the card
-                    color: 'white', // White text for the entire card
+                    color: 'white', // White text
                     borderRadius: '5px', // Rounded corners
                     transition: 'transform 0.3s ease, box-shadow 0.3s ease', // Smooth hover effect
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Subtle shadow
@@ -209,64 +187,22 @@ const ExerciseList: React.FC = () => {
                   }}
                 >
                   <Card.Body>
-                    <Card.Title
-                      style={{
-                        fontWeight: 'bold',
-                        fontSize: '1.2rem',
-                        textAlign: 'left',
-                        color: 'white', // Ensure the title text is white
-                      }}
-                    >
+                    <Card.Title style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
                       {exercise.name}
                     </Card.Title>
-                    <p
-                      style={{
-                        fontSize: '0.9rem',
-                        marginBottom: '10px',
-                        textAlign: 'left',
-                        color: 'white', // Ensure the text is white
-                      }}
-                    >
+                    <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
                       <strong>Type:</strong> {exercise.type}
                     </p>
-                    <p
-                      style={{
-                        fontSize: '0.9rem',
-                        marginBottom: '10px',
-                        textAlign: 'left',
-                        color: 'white', // Ensure the text is white
-                      }}
-                    >
+                    <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
                       <strong>Muscle:</strong> {exercise.muscle}
                     </p>
-                    <p
-                      style={{
-                        fontSize: '0.9rem',
-                        marginBottom: '10px',
-                        textAlign: 'left',
-                        color: 'white', // Ensure the text is white
-                      }}
-                    >
+                    <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
                       <strong>Equipment:</strong> {exercise.equipment}
                     </p>
-                    <p
-                      style={{
-                        fontSize: '0.9rem',
-                        marginBottom: '10px',
-                        textAlign: 'left',
-                        color: 'white', // Ensure the text is white
-                      }}
-                    >
+                    <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
                       <strong>Difficulty:</strong> {exercise.difficulty}
                     </p>
-                    <p
-                      style={{
-                        fontSize: '0.9rem',
-                        marginBottom: '10px',
-                        textAlign: 'left',
-                        color: 'white', // Ensure the text is white
-                      }}
-                    >
+                    <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
                       <strong>Instructions:</strong> {exercise.instructions}
                     </p>
                   </Card.Body>
@@ -280,5 +216,4 @@ const ExerciseList: React.FC = () => {
   );
 };
 
-export default ExerciseList;
-
+export default NoUserBrowse;

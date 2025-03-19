@@ -51,7 +51,6 @@ color: black;
   text-align: -webkit-center;
   line-height: 1.5;
   font-family: 'JetBrains Mono', monospace;
-  color: black;
 }
 
 img {
@@ -61,4 +60,38 @@ img {
   display: block; /* Centers the image if inside a block container */
   border-radius: 3rem;
   border: 5px solid black; 
+}
+
+/* main.css or your component-specific CSS */
+main {
+  min-height: 75vh;           /* Ensure full viewport height */
+  display: flex;
+  align-items: center;         /* Vertical centering */
+  justify-content: center;     /* Horizontal centering */
+  padding: 1rem;               /* Optional: some padding for smaller screens */
+}
+
+.footer-container{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(248, 247, 245, 0.418);
+  width: 100%;
+  height: 10vh; /* sets the footer height to 10% of the viewport height */
+}
+
+.custom-flex-container-footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center; /* centers items vertically */
+  height: 100%; /* ensures the footer takes full height */
+  width: 75vw; /* sets the container width to 75% of the viewport width */
+  margin: 0 auto;
+  color: black; /* sets text color for all children */
+  font-size: xx-large;
+}
+
+.custom-flex-container-footer a {
+  color: black;
+  text-decoration: none; /* removes underlines from links */
 }
