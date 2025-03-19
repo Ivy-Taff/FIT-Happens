@@ -2,7 +2,7 @@
 
 ## Description
 Fit Happens – Because Your Muscles Won’t Grow Themselves  
-Tired of wandering the gym like a lost soul? Fit Happens takes the guesswork out of your workouts! Whether you’re looking to crush leg day, build boulder shoulders, or just find a solid full-body burner, we've got you covered.
+Tired of wandering the gym like a lost soul? Fit Happens takes the guesswork out of your workouts! Whether you’re looking to crush leg day, build boulder shoulders, or just find a solid full-body burner, we've got you covered. In creating your first collaborative MERN-stack single-page application, you’ll combine a scalable MongoDB back end, a GraphQL API, and an Express.js and Node.js server with a React front end, implementing user authentication with JWT to build a user-focused platform. 
 
 ## Table of Contents
 - [Installation](#installation)
