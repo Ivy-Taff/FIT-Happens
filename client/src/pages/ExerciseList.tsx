@@ -35,12 +35,8 @@ const ExerciseList: React.FC = () => {
 
   const handleShowForm = () => setShowForm(true);
 
-  // Log the raw data outside useEffect to see if it exists
-  console.log('Raw fetched data:', data?.getSavedExercises);
-
   useEffect(() => {
     if (data && data.getSavedExercises) {
-      console.log('useEffect triggered with data:', data);
       const exercises: Exercise[] = data.getSavedExercises;
 
       // Helper to extract unique non-empty string values
@@ -58,12 +54,6 @@ const ExerciseList: React.FC = () => {
       const newMuscleGroups = getUniqueValues('muscle');
       const newEquipments = getUniqueValues('equipment');
       const newDifficulties = getUniqueValues('difficulty');
-
-      // Log the computed values for debugging
-      console.log('Computed Types:', newTypes);
-      console.log('Computed Muscle Groups:', newMuscleGroups);
-      console.log('Computed Equipments:', newEquipments);
-      console.log('Computed Difficulties:', newDifficulties);
 
       setTypes(newTypes.length ? newTypes : defaultTypes);
       setMuscleGroups(newMuscleGroups.length ? newMuscleGroups : defaultMuscleGroups);
@@ -86,109 +76,181 @@ const ExerciseList: React.FC = () => {
     );
   });
 
+  // Inline styles for the container div
+  const containerStyle = {
+    backgroundColor: '#1a1a1a', // Lighter black background
+    borderRadius: '5px', // Rounded corners
+    padding: '20px', // Padding inside the div
+    margin: '20px auto', // Margin on top and sides
+    color: 'white', // Text color
+    maxWidth: '1200px', // Center the content with a max width
+  };
+
+  const buttonContainerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '20px', // Add spacing below the button
+  };
+
+  const buttonStyle = {
+    transition: 'transform 0.3s ease, background-color 0.3s ease',
+  };
+
+  const titleStyle = {
+    fontFamily: 'Roboto, sans-serif',
+    fontSize: '1.5rem',
+    marginTop: '20px',
+    textAlign: 'left',
+    color: '#fff',
+  };
+
+  const cardStyle = {
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+  };
+
+ 
+
   return (
     <>
-      <div className='text-light bg-dark p-5'>
+      <div className="text-light bg-dark p-5">
         <Container>
           <h1>Viewing available exercises</h1>
         </Container>
       </div>
-      <Container>
-        <h2 className='pt-5'>
-          {filteredExercisesList.length
-            ? `Viewing ${filteredExercisesList.length} saved ${filteredExercisesList.length === 1 ? 'exercise' : 'exercises'}:`
-            : 'No exercises match your filters!'}
-        </h2>
-
-        {/* Filters for sorting the cards */}
-        <Row className='mb-4'>
-          <Col md={3}>
-            <Form.Select onChange={(e) => setSelectedType(e.target.value)} value={selectedType}>
-              <option value=''>All Types</option>
-              {types.map((type) => (
-                <option key={type} value={type}>
-                  {(() => {
-                    const formatted = type.replace(/_/g, ' ');
-                    return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
-                  })()}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-          <Col md={3}>
-            <Form.Select
-              onChange={(e) => setSelectedMusclegroup(e.target.value)}
-              value={selectedMusclegroup}
+      <div style={containerStyle}>
+        <Container>
+          {/* Centered Button */}
+          <div style={buttonContainerStyle}>
+            <Button
+              style={buttonStyle}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+              variant="primary"
+              onClick={handleShowForm}
             >
-              <option value=''>All Muscle Groups</option>
-              {muscleGroups.map((musclegroup) => (
-                <option key={musclegroup} value={musclegroup}>
-                  {(() => {
-                    const formatted = musclegroup.replace(/_/g, ' ');
-                    return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
-                  })()}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-          <Col md={3}>
-            <Form.Select onChange={(e) => setSelectedEquipment(e.target.value)} value={selectedEquipment}>
-              <option value=''>All Equipment</option>
-              {equipments.map((equipment) => (
-                <option key={equipment} value={equipment}>
-                  {(() => {
-                    const formatted = equipment.replace(/_/g, ' ');
-                    return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
-                  })()}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-          <Col md={3}>
-            <Form.Select onChange={(e) => setSelectedDifficulty(e.target.value)} value={selectedDifficulty}>
-              <option value=''>All Difficulties</option>
-              {difficulties.map((difficulty) => (
-                <option key={difficulty} value={difficulty}>
-                  {(() => {
-                    const formatted = difficulty.replace(/_/g, ' ');
-                    return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
-                  })()}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-        </Row>
-
-        <Row>
-          {/* Exercise card layout */}
-          {filteredExercisesList.map((exercise) => (
-            <Col md='4' key={exercise._id}>
-              <Card border='dark'>
-                <Card.Body>
-                  <Card.Title>{exercise.name}</Card.Title>
-                  <p className='small'>
-                    {exercise.type} for {exercise.muscle}
-                  </p>
-                  <Card.Text>Difficulty: {exercise.difficulty}</Card.Text>
-                  <Card.Text>Equipment needed: {exercise.equipment}</Card.Text>
-                  <Card.Text>Instructions: {exercise.instructions}</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-
-        {/* Button to open the WorkoutCreator */}
-        <Button variant='primary' onClick={handleShowForm}>
-          Create Workout
-        </Button>
-
-        {showForm && (
-          <div className='mt-5'>
-            <CreateWorkout />
+              Create Workout
+            </Button>
           </div>
-        )}
-      </Container>
+
+          {showForm && (
+            <div className="mt-5">
+              <CreateWorkout />
+            </div>
+          )}
+
+          <h2 style={titleStyle}>
+            {filteredExercisesList.length
+              ? `Viewing ${filteredExercisesList.length} saved ${
+                  filteredExercisesList.length === 1 ? 'exercise' : 'exercises'
+                }:`
+              : 'No exercises match your filters!'}
+          </h2>
+
+          {/* Filters for sorting the cards */}
+          <Row className="mb-4">
+            <Col md={3}>
+              <Form.Select onChange={(e) => setSelectedType(e.target.value)} value={selectedType}>
+                <option value="">All Types</option>
+                {types.map((type) => (
+                  <option key={type} value={type}>
+                    {(() => {
+                      const formatted = type.replace(/_/g, ' ');
+                      return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
+                    })()}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
+            <Col md={3}>
+              <Form.Select
+                onChange={(e) => setSelectedMusclegroup(e.target.value)}
+                value={selectedMusclegroup}
+              >
+                <option value="">All Muscle Groups</option>
+                {muscleGroups.map((musclegroup) => (
+                  <option key={musclegroup} value={musclegroup}>
+                    {(() => {
+                      const formatted = musclegroup.replace(/_/g, ' ');
+                      return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
+                    })()}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
+            <Col md={3}>
+              <Form.Select onChange={(e) => setSelectedEquipment(e.target.value)} value={selectedEquipment}>
+                <option value="">All Equipment</option>
+                {equipments.map((equipment) => (
+                  <option key={equipment} value={equipment}>
+                    {(() => {
+                      const formatted = equipment.replace(/_/g, ' ');
+                      return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
+                    })()}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
+            <Col md={3}>
+              <Form.Select onChange={(e) => setSelectedDifficulty(e.target.value)} value={selectedDifficulty}>
+                <option value="">All Difficulties</option>
+                {difficulties.map((difficulty) => (
+                  <option key={difficulty} value={difficulty}>
+                    {(() => {
+                      const formatted = difficulty.replace(/_/g, ' ');
+                      return formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
+                    })()}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
+          </Row>
+
+          <Row>
+            {filteredExercisesList.map((exercise) => (
+              <Col md="4" key={exercise._id}>
+                <Card
+                  style={{
+                    backgroundColor: '#1a1a1a', // Dark background for the card
+                    color: 'white', // White text
+                    borderRadius: '5px', // Rounded corners
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease', // Smooth hover effect
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Subtle shadow
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+                      {exercise.name}
+                    </Card.Title>
+                    <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
+                      <strong>Type:</strong> {exercise.type}
+                    </p>
+                    <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
+                      <strong>Muscle:</strong> {exercise.muscle}
+                    </p>
+                    <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
+                      <strong>Equipment:</strong> {exercise.equipment}
+                    </p>
+                    <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
+                      <strong>Difficulty:</strong> {exercise.difficulty}
+                    </p>
+                    <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
+                      <strong>Instructions:</strong> {exercise.instructions}
+                    </p>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </div>
     </>
   );
 };
