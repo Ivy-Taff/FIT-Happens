@@ -12,6 +12,7 @@ import WorkoutCalendar from './components/WorkoutCalendar.js';
 import SavedWorkouts from './pages/SavedWorkouts.js';
 import NoUserHome from './pages/NoUserHome.js';
 import Auth from './utils/auth.js';
+import NoUserBrowse from './pages/NoUserBrowse.js';
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
         element: <Signup />
       }, {
         path: '/exercises',
-        element: <ExerciseList />
+        element: Auth.loggedIn() ? <ExerciseList /> : <NoUserBrowse />
       }, {
         path: '/calendar',
         element: <WorkoutCalendar />
