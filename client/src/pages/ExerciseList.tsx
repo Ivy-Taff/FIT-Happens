@@ -102,19 +102,12 @@ const ExerciseList: React.FC = () => {
     color: '#fff',
   };
 
-  const cardStyle = {
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-  };
-
  
 
   return (
     <>
-      <div className="text-light bg-dark p-5">
-        <Container>
-          <h1>Viewing available exercises</h1>
-        </Container>
-      </div>
+
+      
       <div style={containerStyle}>
         <Container>
           {/* Centered Button */}
@@ -138,7 +131,7 @@ const ExerciseList: React.FC = () => {
 
           <h2 style={titleStyle}>
             {filteredExercisesList.length
-              ? `Viewing ${filteredExercisesList.length} saved ${
+              ? `Viewing ${filteredExercisesList.length} ${
                   filteredExercisesList.length === 1 ? 'exercise' : 'exercises'
                 }:`
               : 'No exercises match your filters!'}
