@@ -104,15 +104,11 @@ const ExerciseList: React.FC = () => {
     color: '#fff',
   };
 
-  const cardStyle = {
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-  };
-
  
 
   return (
     <>
-      <div className="text-light bg-dark p-5">
+      <div className="text-light bg-dark p-4">
         <Container>
           <h1>Viewing available exercises</h1>
         </Container>
