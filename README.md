@@ -1,8 +1,20 @@
 # FIT-Happens
 
-## Description
+<img src='https://img.shields.io/badge/MIT-green?style=for-the-badge'></img>
+<img src ='https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white'></img>
+<img src ='https://img.shields.io/badge/-ApolloGraphQL-311C87?style=for-the-badge&logo=apollo-graphql'></img>
+<img src ='https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB'></img>
+<img src ='https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB'></img>
+<img src ='https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white'></img>
+<img src ='https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white'></img>
+<img src ='https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white'></img>
+
+Please visit the live RENDER deployed application here https://fit-happens.onrender.com
+## App Description
 Fit Happens – Because Your Muscles Won’t Grow Themselves  
 Tired of wandering the gym like a lost soul? Fit Happens takes the guesswork out of your workouts! Whether you’re looking to crush leg day, build boulder shoulders, or just find a solid full-body burner, we've got you covered. In creating your first collaborative MERN-stack single-page application, you’ll combine a scalable MongoDB back end, a GraphQL API, and an Express.js and Node.js server with a React front end, implementing user authentication with JWT to build a user-focused platform. 
+## Technology Used
+This a collaborative MERN-stack, single-page application. We combined a scalable MongoDB back end, a GraphQL API, and an Express.js and Node.js server with a React front end, implementing user authentication with JWT to build a user-focused platform. We utilized ESLint during the development process to ensure precise unform code. 
 
 ## Table of Contents
 - [Installation](#installation)
@@ -41,9 +53,9 @@ To install and set up the project locally, follow these steps:
    ```
 
 ## Usage
-- Browse exercises by muscle group or workout type.
-- Select your exercises and schedule them in your personal fitness calendar.
-- Get reminders, stay consistent, and watch your progress unfold.
+- Browse exercises by muscle group or exercise type.
+- Create custom workouts with your favorite exercises
+- Select your custom workouts and schedule them in your weekly fitness calendar.
 
 ## Contributing
 Contributors to this project include:
@@ -72,4 +84,4 @@ If you have any questions, feel free to reach out to us:
   - Erin Foley: erindagfoley@gmail.com
 
 ## License
-None
+This project is licensed under the MIT license.
