@@ -20,7 +20,7 @@ const SavedWorkouts: React.FC = () => {
     if (error) return <p>Error loading workouts</p>;
     const handleDeleteWorkout = async (workoutId: string) => {
         try {
-            await deleteWorkout({ variables: { workoutId } });
+            await deleteWorkout({ variables: { id: workoutId } });
             setSuccessMessage("Workout deleted successfully!");
             refetch();
         } catch (error) {

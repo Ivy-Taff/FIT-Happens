@@ -10,6 +10,8 @@ import ErrorPage from './pages/Error';
 import ExerciseList from './pages/ExerciseList.js';
 import WorkoutCalendar from './components/WorkoutCalendar.js';
 import SavedWorkouts from './pages/SavedWorkouts.js';
+import NoUserHome from './pages/NoUserHome.js';
+import Auth from './utils/auth.js';
 
 const router = createBrowserRouter([
   {
@@ -19,7 +21,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />
+        element: Auth.loggedIn() ? <Home /> : <NoUserHome />,
       }, {
         path: '/login',
         element: <Login />

@@ -10,8 +10,6 @@ interface SavedExercisesData {
   getSavedExercises: Exercise[];
 }
 
-// not sure how userId is coming in on signup, this is assuming we are saving them in local
-const storedUserId = localStorage.getItem('userId') || '';
 
 // Default fallback values based on your provided sample response
 const defaultTypes = ['strongman'];
@@ -108,11 +106,8 @@ const ExerciseList: React.FC = () => {
 
   return (
     <>
-      <div className="text-light bg-dark p-4">
-        <Container>
-          <h1>Viewing available exercises</h1>
-        </Container>
-      </div>
+
+      
       <div style={containerStyle}>
         <Container>
           {/* Centered Button */}
@@ -136,7 +131,7 @@ const ExerciseList: React.FC = () => {
 
           <h2 style={titleStyle}>
             {filteredExercisesList.length
-              ? `Viewing ${filteredExercisesList.length} saved ${
+              ? `Viewing ${filteredExercisesList.length} ${
                   filteredExercisesList.length === 1 ? 'exercise' : 'exercises'
                 }:`
               : 'No exercises match your filters!'}
