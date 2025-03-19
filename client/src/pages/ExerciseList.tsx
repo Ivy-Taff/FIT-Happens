@@ -86,15 +86,10 @@ const ExerciseList: React.FC = () => {
 
   return (
     <>
-      <div className='text-light bg-dark p-5'>
-        <Container>
-          <h1>Viewing available exercises</h1>
-        </Container>
-      </div>
       <Container>
         <h2 className='pt-5'>
           {filteredExercisesList.length
-            ? `Viewing ${filteredExercisesList.length} saved ${filteredExercisesList.length === 1 ? 'exercise' : 'exercises'}:`
+            ? `Viewing ${filteredExercisesList.length} ${filteredExercisesList.length === 1 ? 'exercise' : 'exercises'}:`
             : 'No exercises match your filters!'}
         </h2>
 
