@@ -22,12 +22,21 @@ const WorkoutCalendar: React.FC = () => {
 
   // Initialize the schedule with empty arrays for each day
   useEffect(() => {
-    const initialSchedule: { [day: string]: Workout[] } = {};
-    daysOfWeek.forEach((day) => {
-      initialSchedule[day] = [];
-    });
-    setSchedule(initialSchedule);
+    const savedSchedule = localStorage.getItem("workoutSchedule");
+    if (savedSchedule) {
+      setSchedule(JSON.parse(savedSchedule));
+    } else {
+      const initialSchedule: { [day: string]: Workout[] } = {};
+      daysOfWeek.forEach((day) => {
+        initialSchedule[day] = [];
+      });
+      setSchedule(initialSchedule);
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("workoutSchedule", JSON.stringify(schedule));
+  }, [schedule]);
 
   if (loading) return <p>Loading workouts...</p>;
   if (error) return <p>Error loading workouts</p>;
