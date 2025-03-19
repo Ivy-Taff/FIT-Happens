@@ -1,8 +1,11 @@
+import WorkoutCalendar from "../components/WorkoutCalendar";
+
 const Home = () => {
+
 
   return (
     <main>
-      <h1>Home</h1>
+      <WorkoutCalendar/>
     </main>
   );
 };

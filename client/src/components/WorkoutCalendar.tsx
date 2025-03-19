@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_USER_WORKOUTS } from "../utils/queries";
 import { Workout } from "../interfaces/Workout"; // Make sure you have this model defined
-
+import { User } from "../interfaces/User"; // Make sure you have this model defined
+import "../assets/WorkoutCalendar.css";
 
 const daysOfWeek = [
   "Monday",
@@ -14,28 +15,41 @@ const daysOfWeek = [
   "Sunday",
 ];
 
+interface GetUserWorkoutsData {
+  getUserWorkouts: User;
+}
+
 const WorkoutCalendar: React.FC = () => {
-  const { loading, error, data } = useQuery(GET_USER_WORKOUTS);
-  
+  const { loading, error, data } = useQuery<GetUserWorkoutsData>(GET_USER_WORKOUTS);
+
   // State to track workouts assigned to each day
   const [schedule, setSchedule] = useState<{ [day: string]: Workout[] }>({});
 
   // Initialize the schedule with empty arrays for each day
   useEffect(() => {
-    const initialSchedule: { [day: string]: Workout[] } = {};
-    daysOfWeek.forEach((day) => {
-      initialSchedule[day] = [];
-    });
-    setSchedule(initialSchedule);
+    const savedSchedule = localStorage.getItem("workoutSchedule");
+    if (savedSchedule) {
+      setSchedule(JSON.parse(savedSchedule));
+    } else {
+      const initialSchedule: { [day: string]: Workout[] } = {};
+      daysOfWeek.forEach((day) => {
+        initialSchedule[day] = [];
+      });
+      setSchedule(initialSchedule);
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("workoutSchedule", JSON.stringify(schedule));
+  }, [schedule]);
 
   if (loading) return <p>Loading workouts...</p>;
   if (error) return <p>Error loading workouts</p>;
 
-  // returns an array of workouts in data.GetUserWorkouts
-  const workouts: Workout[] = data.GetUserWorkouts;
+  // Returns an array of workouts in data.GetUserWorkouts
+  const workouts: Workout[] = data?.getUserWorkouts.workouts || [];
 
-  // When a drag starts,store the workout's ID in the drag event's object.
+  // When a drag starts, store the workout's ID in the drag event's object.
   const handleDragStart = (event: React.DragEvent<HTMLDivElement>, workout: Workout) => {
     event.dataTransfer.setData("workoutId", workout._id);
   };
@@ -76,9 +90,18 @@ const WorkoutCalendar: React.FC = () => {
   return (
     <div className="workout-calendar">
       <h2>Workout Calendar</h2>
-      
+
       {/* Render the calendar with day slots */}
-      <div className="calendar-container" style={{ display: "flex" }}>
+      <div
+        className="calendar-container"
+        style={{
+          display: "flex",
+          backgroundColor: "white",
+          flexWrap: "wrap", // Allow wrapping for mobile responsiveness
+          gap: "10px", // Add spacing between day slots
+          padding: "10px", // Add padding to the container
+        }}
+      >
         {daysOfWeek.map((day) => (
           <div
             key={day}
@@ -86,11 +109,12 @@ const WorkoutCalendar: React.FC = () => {
             onDragOver={handleDragOver}
             onDrop={(event) => handleDrop(event, day)}
             style={{
-              flex: 1,
-              border: "1px solid #ccc",
-              margin: "5px",
-              padding: "5px",
-              minHeight: "200px",
+              flex: "1 1 200px", // Flex grow, shrink, and base width
+              border: "2px solid black", // Black border
+              borderRadius: "8px", // Rounded corners
+              padding: "10px", // Inner padding
+              minHeight: "150px", // Minimum height for each day slot
+              backgroundColor: "#f9f9f9", // Light background for contrast
             }}
           >
             <h3>{day}</h3>
@@ -100,14 +124,25 @@ const WorkoutCalendar: React.FC = () => {
                   key={workout._id}
                   className="workout-card"
                   style={{
-                    border: "1px solid #000",
-                    margin: "5px 0",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
                     padding: "5px",
-                    background: "#f9f9f9",
+                    margin: "5px 0",
+                    backgroundColor: "#fff",
                   }}
                 >
                   <p>{workout.name}</p>
-                  <button onClick={() => removeWorkoutFromDay(day, workout._id)}>
+                  <button
+                    onClick={() => removeWorkoutFromDay(day, workout._id)}
+                    style={{
+                      backgroundColor: "#ff4444",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      padding: "5px 10px",
+                      cursor: "pointer",
+                    }}
+                  >
                     Remove
                   </button>
                 </div>
@@ -118,7 +153,15 @@ const WorkoutCalendar: React.FC = () => {
 
       {/* List of available workouts */}
       <h3>Available Workouts</h3>
-      <div className="workout-list" style={{ display: "flex", flexWrap: "wrap" }}>
+      <div
+        className="workout-list"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "10px", // Add spacing between workout cards
+          padding: "10px", // Add padding to the container
+        }}
+      >
         {workouts.map((workout) => (
           <div
             key={workout._id}
@@ -127,11 +170,11 @@ const WorkoutCalendar: React.FC = () => {
             onDragStart={(event) => handleDragStart(event, workout)}
             style={{
               border: "1px solid #000",
-              margin: "5px",
-              padding: "5px",
+              borderRadius: "8px",
+              padding: "10px",
               width: "150px",
               cursor: "grab",
-              background: "#e0e0e0",
+              backgroundColor: "#e0e0e0",
             }}
           >
             <p>{workout.name}</p>

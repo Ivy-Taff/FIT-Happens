@@ -1,9 +1,16 @@
 import { Schema, model, Document } from 'mongoose';
 
-interface Workout extends Document {
+interface ExerciseArray {
+  _typename: String;
+  _id: String;
   name: String;
-  userId: Schema.Types.ObjectId,
-  exercises: Schema.Types.ObjectId[];
+}
+
+interface Workout extends Document {
+  _id: String;
+  name: String;
+  userId: String,
+  exercises: ExerciseArray[];
   createdAt: Date;
 }
 

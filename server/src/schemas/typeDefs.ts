@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 const typeDefs = gql`
   type User {
-    _id: ID
+    _id: ID!
     username: String
     email: String
     password: String
@@ -61,23 +61,13 @@ const typeDefs = gql`
     instructions: String
   }
 
-  type Workout {
-    _id: ID
-    exercise: [Exercise]
-    currentDate: String
-  }
-
-  input WorkoutInput {
-    exercise: [ID]!
-    currentDate: String!
-  }
 
   type Query {
     users: [User]
     user(username: String!): User
     me: User
     getSavedExercises: [Exercise]
-    getUserWorkouts(userId: ID!): [Workout]
+    getUserWorkouts: User
     exercises: [Exercise]
     exercise(id: ID!): Exercise
     workouts: [Workout]
@@ -88,13 +78,12 @@ const typeDefs = gql`
   type Mutation {
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
-    fetchAndStoreExercises: [Exercise]
     createWorkout(name: String!, exerciseIds: [ID!]!): Workout
     updateWorkout(id: ID!, input: WorkoutInput!) : Workout
     removeExerciseFromWorkout(workoutId: ID!, exerciseId: ID!): Workout
     addExercise(input: ExerciseInput!): Exercise
     addWorkout(input: WorkoutInput!): Workout
-
+    deleteWorkout(id: ID!): Workout
   }
 `;
 

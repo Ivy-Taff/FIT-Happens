@@ -66,8 +66,8 @@ export const REMOVE_EXERCISE_FROM_WORKOUT = gql`
 `;
 
 export const DELETE_WORKOUT = gql`
-  mutation DeleteWorkout($workoutId: ID!) {
-    deleteWorkout(workoutId: $workoutId) {
+  mutation DeleteWorkout($id: ID!) {
+    deleteWorkout(id: $id) {
       _id
       name
     }

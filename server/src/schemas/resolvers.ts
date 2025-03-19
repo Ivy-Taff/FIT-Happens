@@ -1,5 +1,4 @@
 
-import axios from "axios";
 import { User, Workout, Exercise } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 
@@ -7,9 +6,6 @@ import { signToken, AuthenticationError } from '../utils/auth.js';
 import dotenv from "dotenv";
 
 dotenv.config();
-
-const EXTERNAL_API_URL = process.env.EXTERNAL_API_URL as string;
-const X_API_KEY = process.env.X_API_KEY as string;
 
 // Define types for the arguments
 interface AddUserArgs {
@@ -26,7 +22,7 @@ interface LoginUserArgs {
 }
 
 interface UserArgs {
-  username: string;
+  userId: string;
 }
 
 
@@ -50,7 +46,7 @@ interface AddExerciseArgs {
     equipment?: string;
     difficulty?: string;
     instructions?: string;
-  };
+  }
 }
 
 interface AddWorkoutArgs {
@@ -74,8 +70,8 @@ const resolvers = {
     users: async () => {
       return User.find().populate('workouts');
     },
-    user: async (_parent: any, { username }: UserArgs) => {
-      return User.findOne({ username }).populate('workouts');
+    user: async (_parent: any, { userId }: UserArgs) => {
+      return User.findOne({ userId }).populate('workouts');
     },
     me: async (_parent: any, _args: any, context: any) => {
       if (context.user) {
@@ -91,8 +87,14 @@ const resolvers = {
     },
 
     // Query to get user workouts
-    getUserWorkouts: async (_: unknown, { userId }: { userId: string }) => {
-      return await Workout.find({ userId }).populate("exercises");
+    getUserWorkouts: async (_parent: any, _args: any, context: any) => {
+      if (context.user) {
+        return await User.findOne({ _id: context.user._id }).populate('workouts').populate({
+          path: "workouts", 
+          populate: "exercises",
+        });
+      }
+      throw new AuthenticationError('Could not authenticate user.');
     },
 
     exercises: async () => {
@@ -129,47 +131,13 @@ const resolvers = {
       return { token, user };
     },
 
-
-    fetchAndStoreExercises: async () => {
-      try {
-        const { data } = await axios.get(EXTERNAL_API_URL, {
-          headers: { "X_API_KEY": X_API_KEY }
-        });
-
-        const savedExercises = [];
-
-        for (const ex of data.exercises) {
-          let existingExercise = await Exercise.findOne({ _id: ex._id });
-
-          if (!existingExercise) {
-            const newExercise = new Exercise({
-              _id: ex._id,
-              name: ex.name,
-              type: ex.type,
-              muscle: ex.muscle,
-              equipment: ex.equipment,
-              difficulty: ex.difficulty,
-              instructions: ex.instructions,
-            });
-            savedExercises.push(await newExercise.save());
-          }
-        }
-        return savedExercises;
-      } catch (error) {
-        throw new Error("Error fetching exercises");
-      }
-    },
-
-
     addExercise: async (_parent: any, { input }: AddExerciseArgs) => {
       return Exercise.create({ ...input });
     },
 
     addWorkout: async (_parent: any, { input }: AddWorkoutArgs) => {
       return Workout.create({ ...input });
-    }
-
-    ,
+    },
 
     createWorkout: async (_: unknown, { name, exerciseIds }: CreateWorkoutArgs, context: UserContext
     ) => {
@@ -179,6 +147,7 @@ const resolvers = {
         exercises: exerciseIds,
         createdAt: new Date(),
       });
+      await User.findOneAndUpdate({_id: context.user._id}, {$addToSet: {workouts: workout._id}}, {new: true})
       return await workout.save();
     },
 
@@ -218,6 +187,17 @@ const resolvers = {
       }
 
       return updatedWorkout;
+    },
+
+    deleteWorkout: async (_: unknown, { id }: { id: string }) => {
+      const deletedWorkout = await Workout.findByIdAndDelete(id);
+      if (!deletedWorkout) {
+        throw new Error("Workout not found");
+      }
+      return {
+        _id: deletedWorkout._id,
+        name: deletedWorkout.name,
+      };
     },
   }
 };
