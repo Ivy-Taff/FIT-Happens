@@ -108,40 +108,43 @@ const WorkoutCreator = () => {
     };
 
     return (
-        <section>
-          <section
+        <section
+          style={{
+            textAlign: 'center', // Center the entire section
+            marginBottom: '20px', // Add spacing below the section
+          }}
+        >
+          {/* Centered and Styled Title */}
+          <h2
             style={{
-              textAlign: 'center', // Center the entire section
-              marginBottom: '20px', // Add spacing below the section
+              fontFamily: 'Roboto, sans-serif',
+              fontSize: '2rem',
+              color: '#fff',
+              marginBottom: '20px', // Add spacing below the title
             }}
           >
-            <h2
-              style={{
-                fontFamily: 'Roboto, sans-serif',
-                fontSize: '2rem',
-                color: '#fff',
-                marginBottom: '20px', // Add spacing below the title
-              }}
-            >
-              {workoutId ? 'Edit Workout' : 'Create a Workout'}
-            </h2>
-            <input
-              type="text"
-              placeholder="Workout Name"
-              value={workoutName}
-              onChange={(e) => setWorkoutName(e.target.value)}
-              style={{
-                width: '80%', // Make the input wider
-                maxWidth: '400px', // Limit the maximum width
-                padding: '10px', // Add padding inside the input
-                fontSize: '1rem', // Adjust font size
-                borderRadius: '5px', // Rounded corners
-                border: '1px solid #ccc', // Subtle border
-                marginBottom: '20px', // Add spacing below the input
-                textAlign: 'center', // Center the placeholder and text
-              }}
-            />
-          </section>
+            {workoutId ? 'Edit Workout' : 'Create a Workout'}
+          </h2>
+    
+          {/* Styled Input for Workout Name */}
+          <input
+            type="text"
+            placeholder="Workout Name"
+            value={workoutName}
+            onChange={(e) => setWorkoutName(e.target.value)}
+            style={{
+              width: '80%', // Make the input wider
+              maxWidth: '400px', // Limit the maximum width
+              padding: '10px', // Add padding inside the input
+              fontSize: '1rem', // Adjust font size
+              borderRadius: '5px', // Rounded corners
+              border: '1px solid #ccc', // Subtle border
+              marginBottom: '20px', // Add spacing below the input
+              textAlign: 'center', // Center the placeholder and text
+              display: 'block', // Ensure the input is centered
+              margin: '0 auto 20px auto', // Center horizontally and add spacing below
+            }}
+          />
     
           <h3 style={{ fontFamily: 'Roboto, sans-serif', color: '#fff', marginBottom: '10px' }}>
             Available Exercises
